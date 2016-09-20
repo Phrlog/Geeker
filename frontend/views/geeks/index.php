@@ -1,7 +1,34 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: phrlog
- * Date: 20.09.16
- * Time: 20:49
- */
+/* @var $this yii\web\View */
+use yii\helpers\Html;
+?>
+
+<?php foreach ($geeks as $geek): ?>
+
+<div class="col-sm-8 blog-main">
+    <div class="row">
+        <div class="col-sm-6">
+            <section class="blog-post">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="blog-post-meta">
+                            <span class="label label-light label-primary">Пользователь</span>
+                            <p class="blog-post-date pull-right">Дата</p>
+                        </div>
+                        <div class="blog-post-content">
+                            <a href="post-image.html">
+                                <h2 class="blog-post-title"><?= $geek->text ?></h2>
+                            </a>
+                            <p></p>
+                            <a class="blog-post-share pull-right" href="#">
+                                <i class="material-icons">&#xE80D;</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<?php endforeach; ?>
