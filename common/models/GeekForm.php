@@ -1,7 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: phrlog
- * Date: 21.09.16
- * Time: 0:06
- */
+namespace common\models;
+
+use yii\base\Model;
+
+class GeekForm extends Model
+{
+    public $text;
+
+    public function rules()
+    {
+        return [
+            [['text', 'text'], 'required']
+        ];
+    }
+
+}
