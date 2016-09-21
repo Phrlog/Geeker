@@ -22,7 +22,7 @@ GeekerAsset::register($this);
 
 <div class="navbar navbar-material-blog navbar-primary navbar-absolute-top">
 
-    <div class="navbar-image" style="background-image: url('img/technology/unsplash-6.jpg');background-position: center 40%;"></div>
+    <div class="navbar-image" style="background-image: url('img/splash.jpg');background-position: center 40%;"></div>
 
     <div class="navbar-wrapper container">
         <div class="navbar-header">
