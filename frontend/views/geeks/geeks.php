@@ -1,6 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
 
 <?php foreach ($geeks as $geek): ?>
@@ -16,7 +17,7 @@ use yii\helpers\Html;
                             <p class="blog-post-date pull-right">Дата</p>
                         </div>
                         <div class="blog-post-content">
-                            <a href="post-image.html">
+                            <a href="<?= Url::to(['view', 'id' => $geek->id]); ?>">
                                 <h2 class="blog-post-title"><?= $geek->text ?></h2>
                             </a>
                             <p></p>
