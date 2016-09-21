@@ -4,6 +4,7 @@
 
 use frontend\assets\GeekerAsset;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 GeekerAsset::register($this);
 ?>
@@ -22,7 +23,7 @@ GeekerAsset::register($this);
 
 <div class="navbar navbar-material-blog navbar-primary navbar-absolute-top">
 
-    <div class="navbar-image" style="background-image: url('img/splash.jpg');background-position: center 40%;"></div>
+    <div class="navbar-image" style="background-image: url('/img/splash.jpg');background-position: center 40%;"></div>
 
     <div class="navbar-wrapper container">
         <div class="navbar-header">
@@ -31,7 +32,7 @@ GeekerAsset::register($this);
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html"><i class="material-icons">&#xE871;</i> Geeker</a>
+            <a class="navbar-brand" href="<?= Url::to(['index']); ?>"><i class="material-icons">&#xE871;</i> Geeker</a>
         </div>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">
