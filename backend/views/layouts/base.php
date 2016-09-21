@@ -5,6 +5,7 @@
 
 use backend\assets\AdminAsset;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 AdminAsset::register($this);
 ?>
@@ -26,9 +27,9 @@ AdminAsset::register($this);
     <header class="navbar" id="header-navbar">
         <div class="container">
             <a href="index.html" id="logo" class="navbar-brand">
-                <img src="img/logo.png" alt="" class="normal-logo logo-white"/>
-                <img src="img/logo-black.png" alt="" class="normal-logo logo-black"/>
-                <img src="img/logo-small.png" alt="" class="small-logo hidden-xs hidden-sm hidden"/>
+                <img src="/img/logo.png" alt="" class="normal-logo logo-white"/>
+                <img src="/img/logo-black.png" alt="" class="normal-logo logo-black"/>
+                <img src="/img/logo-small.png" alt="" class="small-logo hidden-xs hidden-sm hidden"/>
             </a>
 
             <div class="clearfix">
@@ -111,7 +112,7 @@ AdminAsset::register($this);
                                 </li>
                                 <li class="item first-item">
                                     <a href="#">
-                                        <img src="img/samples/messages-photo-1.png" alt=""/>
+                                        <img src="/img/samples/messages-photo-1.png" alt=""/>
 										<span class="content">
 											<span class="content-headline">
 												George Clooney
@@ -126,7 +127,7 @@ AdminAsset::register($this);
                                 </li>
                                 <li class="item">
                                     <a href="#">
-                                        <img src="img/samples/messages-photo-2.png" alt=""/>
+                                        <img src="/img/samples/messages-photo-2.png" alt=""/>
 										<span class="content">
 											<span class="content-headline">
 												Emma Watson
@@ -141,7 +142,7 @@ AdminAsset::register($this);
                                 </li>
                                 <li class="item">
                                     <a href="#">
-                                        <img src="img/samples/messages-photo-3.png" alt=""/>
+                                        <img src="/img/samples/messages-photo-3.png" alt=""/>
 										<span class="content">
 											<span class="content-headline">
 												Robert Downey Jr.
@@ -163,32 +164,20 @@ AdminAsset::register($this);
                         </li>
                         <li class="dropdown hidden-xs">
                             <a class="btn dropdown-toggle" data-toggle="dropdown">
-                                New Item
+                                Новый твит
                                 <i class="fa fa-caret-down"></i>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="item">
-                                    <a href="#">
+                                    <a href="<?= Url::to(['admin/create-geek']); ?>">
                                         <i class="fa fa-archive"></i>
-                                        New Product
+                                        Создать твит
                                     </a>
                                 </li>
                                 <li class="item">
-                                    <a href="#">
+                                    <a href="<?= Url::to(['admin/create-date-geek']); ?>">
                                         <i class="fa fa-shopping-cart"></i>
-                                        New Order
-                                    </a>
-                                </li>
-                                <li class="item">
-                                    <a href="#">
-                                        <i class="fa fa-sitemap"></i>
-                                        New Category
-                                    </a>
-                                </li>
-                                <li class="item">
-                                    <a href="#">
-                                        <i class="fa fa-file-text"></i>
-                                        New Page
+                                        Создать твит из текущего времени
                                     </a>
                                 </li>
                             </ul>
@@ -238,7 +227,7 @@ AdminAsset::register($this);
                         </li>
                         <li class="dropdown profile-dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="img/samples/scarlet-159.png" alt=""/>
+                                <img src="/img/samples/scarlet-159.png" alt=""/>
                                 <span class="hidden-xs">Scarlett Johansson</span> <b class="caret"></b>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
