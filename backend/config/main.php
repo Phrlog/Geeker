@@ -37,14 +37,15 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '/' => 'admin/create-geek',
             ],
         ],
-        */
+
     ],
     'params' => $params,
     'defaultRoute' => 'admin'
