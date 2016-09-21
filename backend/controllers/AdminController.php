@@ -12,7 +12,7 @@ use common\models\GeekForm;
 class AdminController extends Controller
 {
     public $layout = 'base';
-
+    public $defaultAction = 'create-geek';
     /**
      * @inheritdoc
      */
