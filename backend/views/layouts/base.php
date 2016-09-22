@@ -162,6 +162,11 @@ AdminAsset::register($this);
                                     </li>
                                 </ul>
                             </li>
+                            <li>
+                                <a class="btn" href="<?= Url::to(['admin/show-geeks']); ?>">
+                                    <p>Показать все твиты</p>
+                                </a>
+                            </li>
                             <li class="dropdown hidden-xs">
                                 <a class="btn dropdown-toggle" data-toggle="dropdown">
                                     Новый твит
@@ -178,29 +183,6 @@ AdminAsset::register($this);
                                         <a href="<?= Url::to(['admin/create-date-geek']); ?>">
                                             <i class="fa fa-shopping-cart"></i>
                                             Создать твит из текущего времени
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown hidden-xs">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown">
-                                    English
-                                    <i class="fa fa-caret-down"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="item">
-                                        <a href="#">
-                                            Spanish
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            German
-                                        </a>
-                                    </li>
-                                    <li class="item">
-                                        <a href="#">
-                                            Italian
                                         </a>
                                     </li>
                                 </ul>
