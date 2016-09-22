@@ -2,11 +2,11 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use frontend\assets\GeekerAsset;
+use frontend\assets\MainAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-GeekerAsset::register($this);
+MainAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

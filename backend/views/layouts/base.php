@@ -163,7 +163,7 @@ AdminAsset::register($this);
                                 </ul>
                             </li>
                             <li>
-                                <a class="btn" href="<?= Url::to(['admin/show-geeks']); ?>">
+                                <a class="btn" href="<?= Url::to(['geeks/index']); ?>">
                                     <p>Показать все твиты</p>
                                 </a>
                             </li>
@@ -174,13 +174,13 @@ AdminAsset::register($this);
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li class="item">
-                                        <a href="<?= Url::to(['admin/create-geek']); ?>">
+                                        <a href="<?= Url::to(['geeks/create']); ?>">
                                             <i class="fa fa-archive"></i>
                                             Создать твит
                                         </a>
                                     </li>
                                     <li class="item">
-                                        <a href="<?= Url::to(['admin/create-date-geek']); ?>">
+                                        <a href="<?= Url::to(['geeks/create-date-geek']); ?>">
                                             <i class="fa fa-shopping-cart"></i>
                                             Создать твит из текущего времени
                                         </a>
