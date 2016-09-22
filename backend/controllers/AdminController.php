@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Controller;
 use common\models\Geeks;
 use common\models\GeekForm;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -57,5 +58,56 @@ class AdminController extends Controller
             'model'  => $model,
             'result' => $result
         ]);
+    }
+
+    public function actionShowGeeks()
+    {
+        $geeks = new Geeks();
+        $geeks = $geeks->find()->all();
+
+        return $this->render('show-geeks',[
+            'geeks' => $geeks
+        ]);
+    }
+
+    public function actionEditGeek($id)
+    {
+        $geek = new Geeks();
+        $geek = $geek->findOne($id);
+
+        if ($geek === null) {
+            throw new NotFoundHttpException;
+        }
+
+        $result = null;
+        $model = new GeekForm();
+        $text = Yii::$app->request->post('GeekForm')['text'];
+
+        $model->text = $geek->text;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $geek->text = $text;
+            $result = $geek->save() ? "Твит успешно изменен" : "Неудача! Попробуйте снова.";
+        }
+
+        return $this->render('edit-geek', [
+            'model'  => $model,
+            'result' => $result
+        ]);
+    }
+
+    public function actionDeleteGeek($id)
+    {
+        $geek = new Geeks();
+
+        $geek = $geek->findOne($id);
+
+        if ($geek === null) {
+            throw new NotFoundHttpException;
+        }
+
+        $geek->delete();
+
+        return $this->redirect(["geeks"]);
     }
 }
