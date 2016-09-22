@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 /**
  * Site controller
  */
-class AdminController extends Controller
+class GeeksController extends Controller
 {
     public $layout = 'base';
     /**
@@ -22,6 +22,21 @@ class AdminController extends Controller
         ];
     }
 
+    public function actionIndex()
+    {
+        return $this->actionGeeks();
+    }
+
+    public function actionGeeks()
+    {
+        $geeks = new Geeks();
+        $geeks = $geeks->find()->all();
+
+        return $this->render('show-geeks',[
+            'geeks' => $geeks
+        ]);
+    }
+
     /**
      * Create geek with current time
      *
@@ -31,6 +46,7 @@ class AdminController extends Controller
     {
         $geek = new Geeks();
 
+        date_default_timezone_set('europe/moscow');
         $time = date("H:i:s");
 
         $geek->text = $time;
@@ -41,7 +57,7 @@ class AdminController extends Controller
         ]);
     }
 
-    public function actionCreateGeek()
+    public function actionCreate()
     {
         $model = new GeekForm();
         $text = Yii::$app->request->post('GeekForm')['text'];
@@ -63,22 +79,12 @@ class AdminController extends Controller
             return $this->refresh();
         }
 
-        return $this->render('create-geek', [
+        return $this->render('create', [
             'model'  => $model,
         ]);
     }
 
-    public function actionShowGeeks()
-    {
-        $geeks = new Geeks();
-        $geeks = $geeks->find()->all();
-
-        return $this->render('show-geeks',[
-            'geeks' => $geeks
-        ]);
-    }
-
-    public function actionEditGeek($id)
+    public function actionEdit($id)
     {
         $geek = new Geeks();
         $geek = $geek->findOne($id);
@@ -108,12 +114,12 @@ class AdminController extends Controller
             return $this->refresh();
         }
 
-        return $this->render('edit-geek', [
+        return $this->render('edit', [
             'model'  => $model
         ]);
     }
 
-    public function actionDeleteGeek($id)
+    public function actionDelete($id)
     {
         $geek = new Geeks();
 
@@ -127,5 +133,5 @@ class AdminController extends Controller
 
         return $this->redirect(["geeks"]);
     }
-    
+
 }
