@@ -11,11 +11,11 @@ use yii\helpers\Url;
             <h2><?= $geek->text ?></h2>
         </header>
         <div class="main-box-body clearfix">
-            <a href="<?= Url::to(['admin/edit-geek', 'id' => $geek->id]); ?>" >
+            <a href="<?= Url::to(['geeks/edit', 'id' => $geek->id]); ?>" >
                 <i class="fa fa-edit"></i>
                 Изменить
             </a>
-            <a href="<?= Url::to(['admin/delete-geek', 'id' => $geek->id]); ?>">
+            <a href="<?= Url::to(['geeks/delete', 'id' => $geek->id]); ?>">
                 <i class="fa fa-trash-o"></i>
                 Удалить
             </a>
