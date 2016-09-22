@@ -46,8 +46,8 @@ return [
             'enablePrettyUrl' => true,
             'enableStrictParsing' => false,
             'rules' => [
-                '/' => 'admin/show-geeks',
-                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                '/' => 'geeks/index',
+                '<controller:\w+>/<id:\d+>' => '<controller>/edit',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ]
@@ -55,5 +55,5 @@ return [
 
     ],
     'params' => $params,
-    'defaultRoute' => 'admin'
+    'defaultRoute' => 'geeks'
 ];

@@ -20,5 +20,5 @@ return [
             ]
         ],
     ],
-    'defaultRoute' => 'geeks'
+    'defaultRoute' => 'site'
 ];
