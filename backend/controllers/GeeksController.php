@@ -13,7 +13,6 @@ use yii\web\NotFoundHttpException;
 class AdminController extends Controller
 {
     public $layout = 'base';
-    public $defaultAction = 'create-geek';
     /**
      * @inheritdoc
      */
@@ -44,19 +43,28 @@ class AdminController extends Controller
 
     public function actionCreateGeek()
     {
-        $result = null;
         $model = new GeekForm();
         $text = Yii::$app->request->post('GeekForm')['text'];
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $geek = new Geeks();
             $geek->text = $text;
-            $result = $geek->save() ? "Твит с текстом $text успешно опубликован!" : "Неудача! Попробуйте снова.";
+
+            if ($geek->save()) {
+                $result = "Твит успешно опубликован";
+                $alert_type = 'success';
+            } else {
+                $result = "Неудача! Попробуйте снова";
+                $alert_type = 'error';
+            }
+
+            Yii::$app->session->setFlash($alert_type, $result);
+
+            return $this->refresh();
         }
 
         return $this->render('create-geek', [
             'model'  => $model,
-            'result' => $result
         ]);
     }
 
@@ -79,7 +87,6 @@ class AdminController extends Controller
             throw new NotFoundHttpException;
         }
 
-        $result = null;
         $model = new GeekForm();
         $text = Yii::$app->request->post('GeekForm')['text'];
 
@@ -87,12 +94,22 @@ class AdminController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $geek->text = $text;
-            $result = $geek->save() ? "Твит успешно изменен" : "Неудача! Попробуйте снова.";
+
+            if ($geek->save()) {
+                $result = "Твит успешно изменен";
+                $alert_type = 'success';
+            } else {
+                $result = "Неудача! Попробуйте снова";
+                $alert_type = 'error';
+            }
+
+            Yii::$app->session->setFlash($alert_type, $result);
+
+            return $this->refresh();
         }
 
         return $this->render('edit-geek', [
-            'model'  => $model,
-            'result' => $result
+            'model'  => $model
         ]);
     }
 
@@ -110,4 +127,5 @@ class AdminController extends Controller
 
         return $this->redirect(["geeks"]);
     }
+    
 }
