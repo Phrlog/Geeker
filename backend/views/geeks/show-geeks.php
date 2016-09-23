@@ -1,5 +1,7 @@
 <?php
 /* @var $this yii\web\View */
+/* @var array $geeks common\models\Geeks */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
@@ -8,7 +10,7 @@ use yii\helpers\Url;
 
     <div class="main-box clearfix">
         <header class="main-box-header clearfix">
-            <h2><?= $geek->text ?></h2>
+            <h2><?= Html::encode($geek->text) ?></h2>
         </header>
         <div class="main-box-body clearfix">
             <a href="<?= Url::to(['geeks/edit', 'id' => $geek->id]); ?>" >

@@ -1,5 +1,7 @@
 <?php
 /* @var $this yii\web\View */
+/* @var array $geeks common\models\Geeks */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
@@ -18,7 +20,7 @@ use yii\helpers\Url;
                         </div>
                         <div class="blog-post-content">
                             <a href="<?= Url::to(['view', 'id' => $geek->id]); ?>">
-                                <h2 class="blog-post-title"><?= $geek->text ?></h2>
+                                <h2 class="blog-post-title"><?= Html::encode($geek->text) ?></h2>
                             </a>
                             <p></p>
                             <a class="blog-post-share pull-right" href="#">
