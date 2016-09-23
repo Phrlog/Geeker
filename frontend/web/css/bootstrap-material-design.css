@@ -2416,7 +2416,7 @@ fieldset[disabled] .navbar .btn-link:focus {
   color: #ffffff;
 }
 .navbar.navbar-primary {
-  background-color: #009688;
+  background-color: #9FAFD1;
   color: rgba(255,255,255, 0.84);
 }
 .navbar.navbar-primary .navbar-form .form-group input.form-control::-moz-placeholder,
