@@ -9,6 +9,8 @@ use Yii;
  *
  * @property integer $id
  * @property string $text
+ * @property string $image
+ * @property string $thumbnail
  */
 class Geeks extends \yii\db\ActiveRecord
 {
@@ -28,6 +30,8 @@ class Geeks extends \yii\db\ActiveRecord
         return [
             [['text'], 'required'],
             [['text'], 'string', 'max' => 20000],
+            [['image'], 'string', 'max' => 255],
+            [['thumbnail'], 'string', 'max' => 255]
         ];
     }
 
@@ -39,6 +43,8 @@ class Geeks extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'text' => 'Text',
+            'image' => 'Image',
+            'thumbnail' => 'Thumbnail'
         ];
     }
 }
