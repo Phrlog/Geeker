@@ -6,6 +6,7 @@ use yii\web\Controller;
 use common\models\Geeks;
 use common\models\GeekForm;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * Site controller
@@ -62,8 +63,17 @@ class GeeksController extends Controller
         $model = new GeekForm();
         $text = Yii::$app->request->post('GeekForm')['text'];
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
             $geek = new Geeks();
+
+            if ($model->upload()) {
+                $geek->image = 'uploads/' . $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                $geek->thumbnail = 'uploads/thumbnail/' . $model->imageFile->baseName . '.' . $model->imageFile->extension;
+            }
+
             $geek->text = $text;
 
             if ($geek->save()) {
