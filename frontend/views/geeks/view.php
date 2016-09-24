@@ -12,6 +12,11 @@ use yii\helpers\Html;
                     <span class="label label-light label-success">Пользователь</span>
                     <p class="blog-post-date pull-right">Дата</p>
                 </div>
+
+                <?php if ($geek->image): ?>
+                    <?= Html::img(Yii::$app->urlManagerBackend->createUrl($geek->image), ['class' => "img-responsive"]) ?>
+                <?php endif; ?>
+
                 <div class="blog-post-content">
                     <a href="post-image.html">
                         <h2 class="blog-post-title"><?= Html::encode($geek->text) ?></h2>
