@@ -4,6 +4,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use Yii;
 ?>
 
 <?php foreach ($geeks as $geek): ?>
@@ -13,6 +14,11 @@ use yii\helpers\Url;
         <div class="col-sm-6">
             <section class="blog-post">
                 <div class="panel panel-default">
+
+                    <?php if ($geek->thumbnail): ?>
+                    <?= Html::img(Yii::$app->urlManagerBackend->createUrl($geek->thumbnail), ['class' => "img-responsive"]) ?>
+                    <?php endif; ?>
+
                     <div class="panel-body">
                         <div class="blog-post-meta">
                             <span class="label label-light label-primary">Пользователь</span>
