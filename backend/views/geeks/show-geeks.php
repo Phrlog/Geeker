@@ -12,6 +12,11 @@ use yii\helpers\Url;
         <header class="main-box-header clearfix">
             <h2><?= Html::encode($geek->text) ?></h2>
         </header>
+
+        <?php if ($geek->thumbnail): ?>
+        <?= Html::img('/' . $geek->thumbnail) ?>
+        <?php endif; ?>
+
         <div class="main-box-body clearfix">
             <a href="<?= Url::to(['geeks/edit', 'id' => $geek->id]); ?>" >
                 <i class="fa fa-edit"></i>
