@@ -27,11 +27,6 @@ MainAsset::register($this);
 
     <div class="navbar-wrapper container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand" href="<?= Url::to(['index']); ?>"><i class="material-icons">&#xE871;</i> Geeker</a>
         </div>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
@@ -64,11 +59,6 @@ MainAsset::register($this);
                 </li>
                 <li><a href="page-about.html">О нас</a></li>
                 <li><a href="page-contact.html">Контакты</a></li>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-            </ul>
         </div>
     </div>
 </div>
