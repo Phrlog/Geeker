@@ -19,6 +19,18 @@ return [
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ]
         ],
+        'urlManagerBackend' => [
+            'class' => 'yii\web\urlManager',
+            'baseUrl' => 'http://admin.geek.brains',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                '/' => 'geeks/index',
+                '<controller:\w+>/<id:\d+>' => '<controller>/edit',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+            ],
+        ]
     ],
     'defaultRoute' => 'site'
 ];
