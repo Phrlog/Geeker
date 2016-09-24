@@ -10,6 +10,8 @@ use yii\bootstrap\Alert;
 
 <?= $form->field($model, 'text')->label('Введите ваш твит:') ?>
 
+<?= $form->field($model, 'imageFile')->fileInput() ?>
+
 <div class="form-group">
     <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
 </div>
