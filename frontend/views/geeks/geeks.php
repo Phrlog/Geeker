@@ -16,7 +16,7 @@ use Yii;
                 <div class="panel panel-default">
 
                     <?php if ($geek->thumbnail): ?>
-                    <?= Html::img(Yii::$app->urlManagerBackend->createUrl($geek->thumbnail), ['class' => "img-responsive"]) ?>
+                    <?= Html::img(Yii::$app->urlManagerBackend->createUrl($geek->image), ['class' => "img-responsive"]) ?>
                     <?php endif; ?>
 
                     <div class="panel-body">
