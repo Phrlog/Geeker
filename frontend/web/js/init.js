@@ -1,3 +1,2 @@
-/**
- * Created by phrlog on 20.09.16.
- */
+$.material.init();
+$('body').materialScrollTop();
