@@ -24,6 +24,11 @@ class GeekForm extends Model
         ];
     }
 
+    /**
+     * Upload image and thumbnail
+     *
+     * @return bool
+     */
     public function upload()
     {
         if ($this->validate()) {
@@ -46,6 +51,11 @@ class GeekForm extends Model
         }
     }
 
+    /**
+     * Create dir
+     *
+     * @param $path
+     */
     public function createDir($path)
     {
         if (!file_exists($path)) {
