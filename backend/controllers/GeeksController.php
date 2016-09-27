@@ -7,6 +7,9 @@ use common\models\Geeks;
 use common\models\GeekForm;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
+use yii\filters\AccessControl;
+use common\models\User;
+use yii\filters\VerbFilter;
 
 /**
  * Site controller
@@ -20,6 +23,22 @@ class GeeksController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'geeks', 'create', 'create-date-geek', 'edit', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'geeks', 'create', 'create-date-geek', 'edit', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                ],
+            ],
         ];
     }
 
@@ -50,6 +69,8 @@ class GeeksController extends Controller
         date_default_timezone_set('europe/moscow');
         $time = date("H:i:s");
 
+        $geek->user_id = Yii::$app->user->id;
+
         $geek->text = $time;
         $result = $geek->save() ? "Твит с текстом $time успешно опубликован!" : "Неудача! Попробуйте снова.";
 
@@ -74,6 +95,7 @@ class GeeksController extends Controller
                 $geek->thumbnail = 'uploads/thumbnail/' . $model->imageFile->baseName . '.' . $model->imageFile->extension;
             }
 
+            $geek->user_id = Yii::$app->user->id;
             $geek->text = $text;
 
             if ($geek->save()) {
@@ -107,8 +129,8 @@ class GeeksController extends Controller
         $text = Yii::$app->request->post('GeekForm')['text'];
 
         $model->text = $geek->text;
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->load(Yii::$app->request->post())) {
+            
             $geek->text = $text;
 
             if ($geek->save()) {
