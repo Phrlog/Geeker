@@ -1,6 +1,8 @@
 <?php
 
 use yii\db\Migration;
+use common\models\User;
+use yii\db\Expression;
 
 class m130524_201442_init extends Migration
 {
@@ -19,11 +21,21 @@ class m130524_201442_init extends Migration
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
             'email' => $this->string()->notNull()->unique(),
-
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
+            'role'   => $this->string(32)->defaultValue(NULL),
+            'created_at' => $this->dateTime()->notNull(),
+            'updated_at' => $this->dateTime()->notNull(),
         ], $tableOptions);
+
+        $user = new User();
+        $user->username = 'admin';
+        $user->email = 'admin@localhost';
+        $user->role = 'admin';
+        $user->created_at = new Expression('NOW()');
+        $user->updated_at = new Expression('NOW()');
+        $user->setPassword('admin');
+        $user->generateAuthKey();
+        $user->save();
     }
 
     public function down()
