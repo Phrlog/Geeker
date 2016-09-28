@@ -6,7 +6,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use Yii;
 ?>
-
 <?php foreach ($geeks as $geek): ?>
 
 <div class="col-sm-8 blog-main">
@@ -21,8 +20,8 @@ use Yii;
 
                     <div class="panel-body">
                         <div class="blog-post-meta">
-                            <span class="label label-light label-primary">Пользователь</span>
-                            <p class="blog-post-date pull-right">Дата</p>
+                            <span class="label label-light label-primary"><?= $geek->getAuthor()->username ?></span>
+                            <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
                         </div>
                         <div class="blog-post-content">
                             <a href="<?= Url::to(['view', 'id' => $geek->id]); ?>">
