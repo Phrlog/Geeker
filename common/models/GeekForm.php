@@ -61,4 +61,11 @@ class GeekForm extends Model
             mkdir($path, 0775, true);
         }
     }
+
+    public function attributeLabels()
+    {
+        return [
+            'imageFile' => 'Выберите изображение:'
+        ];
+    }
 }
