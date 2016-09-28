@@ -67,6 +67,8 @@ class UserController extends Controller
 
         $user->status = 0;
 
+        $user->save();
+
         Geeks::deleteAll(['user_id' => $user->id]);
 
         return $this->redirect(["users"]);
