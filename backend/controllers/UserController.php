@@ -74,6 +74,23 @@ class UserController extends Controller
         return $this->redirect(["users"]);
     }
 
+    public function actionUnban($id)
+    {
+        $user = new User();
+
+        $user = $user->findOne($id);
+
+        if ($user === null) {
+            throw new NotFoundHttpException;
+        }
+
+        $user->status = 10;
+
+        $user->save();
+
+        return $this->redirect(["users"]);
+    }
+
     public function actionShow()
     {
 
