@@ -87,7 +87,7 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->loginAdmin()) {
             return $this->goBack();
         } else {
-            return $this->render('login', [
+            return $this->renderPartial('login', [
                 'model' => $model,
             ]);
         }
