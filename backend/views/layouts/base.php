@@ -210,13 +210,10 @@ AdminAsset::register($this);
                             <li class="dropdown profile-dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <img src="/img/samples/scarlet-159.png" alt=""/>
-                                    <span class="hidden-xs">Scarlett Johansson</span> <b class="caret"></b>
+                                    <span class="hidden-xs"><?=Yii::$app->user->identity->findIdentity(Yii::$app->user->id)->username; ?></span> <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a href="user-profile.html"><i class="fa fa-user"></i>Profile</a></li>
-                                    <li><a href="#"><i class="fa fa-cog"></i>Settings</a></li>
-                                    <li><a href="#"><i class="fa fa-envelope-o"></i>Messages</a></li>
-                                    <li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
+                                    <li><a href="<?= Url::to('site/logout') ?>"><i class="fa fa-power-off"></i>Logout</a></li>
                                 </ul>
                             </li>
                             <li class="hidden-xxs">
@@ -239,14 +236,11 @@ AdminAsset::register($this);
                                 <div class="user-box">
 									<span class="name">
 										<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            Scarlett J.
+                                            <?=Yii::$app->user->identity->findIdentity(Yii::$app->user->id)->username; ?>
                                             <i class="fa fa-angle-down"></i>
                                         </a>
 										<ul class="dropdown-menu">
-                                            <li><a href="user-profile.html"><i class="fa fa-user"></i>Profile</a></li>
-                                            <li><a href="#"><i class="fa fa-cog"></i>Settings</a></li>
-                                            <li><a href="#"><i class="fa fa-envelope-o"></i>Messages</a></li>
-                                            <li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
+                                            <li><a href="<?= Url::to('site/logout') ?>"><i class="fa fa-power-off"></i>Logout</a></li>
                                         </ul>
 									</span>
 									<span class="status">
