@@ -12,14 +12,14 @@ use yii\bootstrap\ActiveForm;
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="blog-post-content">
-                <h2 class="blog-post-title">Inline Form</h2>
+                <h2 class="blog-post-title">Войти</h2>
                 <?php $form = ActiveForm::begin(['class' => 'form-inline']); ?>
-                <label class="sr-only" for="exampleInputEmail2">Email address</label>
+                <label class="sr-only" for="username">Имя пользователя</label>
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
-                <label class="sr-only" for="exampleInputPassword2">Password</label>
+                <label class="sr-only" for="password">Пароль</label>
                 <?= $form->field($model, 'password')->passwordInput() ?>
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
-                <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
