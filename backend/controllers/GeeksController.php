@@ -91,8 +91,10 @@ class GeeksController extends Controller
             $geek = new Geeks();
 
             if ($model->upload()) {
-                $geek->image = 'uploads/' . $model->imageFile->baseName . '.' . $model->imageFile->extension;
-                $geek->thumbnail = 'uploads/thumbnail/' . $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                $path = 'upload/' . Yii::$app->user->id;
+
+                $geek->image = $path . '/original/' . $model->imageFile->baseName . '.' . $model->imageFile->extension;
+                $geek->thumbnail = $path . '/thumbnail/' . $model->imageFile->baseName . '.' . $model->imageFile->extension;
             }
 
             $geek->user_id = Yii::$app->user->id;
