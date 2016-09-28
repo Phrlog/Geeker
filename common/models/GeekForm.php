@@ -32,18 +32,17 @@ class GeekForm extends Model
     public function upload()
     {
         if ($this->validate()) {
-            $path = Yii::getAlias('uploads/');
-            $this->createDir($path);
+            $path = Yii::getAlias('@upload') . '/' . Yii::$app->user->id;
+
+            $this->createDir($path . '/original');
+            $this->createDir($path . '/thumbnail');
 
             $file_name = $this->imageFile->baseName . '.' . $this->imageFile->extension;
 
-            $this->imageFile->saveAs('uploads/' . $file_name);
+            $this->imageFile->saveAs($path . '/original/' . $file_name);
 
-            $path = Yii::getAlias('uploads/thumbnail/');
-            $this->createDir($path);
-
-            imagine\Image::thumbnail( 'uploads/' . $file_name, 240, 320)
-                ->save('uploads/thumbnail/' . $file_name, ['quality' => 50]);
+            imagine\Image::thumbnail( $path . '/original/' . $file_name, 240, 320)
+                ->save($path . '/thumbnail/' . $file_name, ['quality' => 50]);
 
             return true;
         } else {
