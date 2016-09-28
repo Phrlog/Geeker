@@ -15,10 +15,21 @@ use yii\helpers\Url;
         </header>
 
         <div class="main-box-body clearfix">
-            <a href="<?= Url::to(['user/ban', 'id' => $user->id]); ?>">
-                <i class="fa fa-trash-o"></i>
-                Забанить
-            </a>
+            <?php if ($user->status == 0): ?>
+                <span class="label label-danger">Забанен</span>
+            <?php elseif ($user->status == 10): ?>
+                <span class="label label-primary">Активен</span>
+            <?php endif; ?>
+
+            <?php if ($user->status == 10): ?>
+                <a href="<?= Url::to(['user/ban', 'id' => $user->id]); ?>">
+                    Забанить
+                </a>
+            <?php elseif ($user->status == 0): ?>
+                <a href="<?= Url::to(['user/unban', 'id' => $user->id]); ?>">
+                    Разбанить
+                </a>
+            <?php endif; ?>
         </div>
     </div>
 
