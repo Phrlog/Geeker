@@ -187,6 +187,19 @@ AdminAsset::register($this);
                                     </li>
                                 </ul>
                             </li>
+                            <li class="dropdown hidden-xs">
+                                <a class="btn dropdown-toggle" data-toggle="dropdown">
+                                    Пользователи
+                                    <i class="fa fa-caret-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="item">
+                                        <a href="<?= Url::to(['user/users']); ?>">
+                                            Показать всех
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
 
