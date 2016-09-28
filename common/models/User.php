@@ -217,8 +217,21 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function isUserAdmin($username)
     {
-        if (static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE, 'role' => 'admin']) )
-        {
+        if (static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE, 'role' => 'admin']) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param $username
+     * 
+     * @return bool
+     */
+    public static function isActiveUser($username)
+    {
+        if (static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]) ) {
             return true;
         } else {
             return false;
