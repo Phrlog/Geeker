@@ -3,6 +3,8 @@ namespace frontend\models;
 
 use yii\base\Model;
 use common\models\User;
+use yii\db\Expression;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * Signup form
@@ -50,6 +52,8 @@ class SignupForm extends Model
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
+        $user->created_at = new Expression('NOW()');
+        $user->updated_at = new Expression('NOW()');
         $user->setPassword($this->password);
         $user->generateAuthKey();
         
