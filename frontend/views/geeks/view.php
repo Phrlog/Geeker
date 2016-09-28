@@ -9,8 +9,8 @@ use yii\helpers\Html;
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="blog-post-meta">
-                    <span class="label label-light label-success">Пользователь</span>
-                    <p class="blog-post-date pull-right">Дата</p>
+                    <span class="label label-light label-success"><?= $geek->getAuthor()->username ?></span>
+                    <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
                 </div>
 
                 <?php if ($geek->image): ?>
