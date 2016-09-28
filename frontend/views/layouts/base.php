@@ -7,6 +7,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 MainAsset::register($this);
+
+$username = Yii::$app->user->id ? Yii::$app->user->identity->findIdentity(Yii::$app->user->id)->username : 'Гость';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -27,27 +29,29 @@ MainAsset::register($this);
 
     <div class="navbar-wrapper container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="<?= Url::to(['index']); ?>"><i class="material-icons">&#xE871;</i> Geeker</a>
+            <a class="navbar-brand" href="<?= Url::to(['geeks/index']); ?>"><i class="material-icons">&#xE871;</i> Geeker</a>
         </div>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">
                 <li class="active dropdown">
-                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Твиты <b class="caret"></b></a>
+                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown"><?=$username ?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="home-fashion.html">Fashion</a></li>
-                        <li><a href="home-food.html">Food</a></li>
-                        <li><a href="home-music.html">Music</a></li>
-                        <li><a href="home-photography.html">Photography</a></li>
-                        <li><a href="home-technology.html">Technology</a></li>
-                        <li><a href="home-travel.html">Travel</a></li>
+                        <?php if ($username == 'Гость'): ?>
+                        <li><a href="<?= Url::to(['site/login']); ?>">Войти</a></li>
+                        <?php endif; ?>
+
+                        <li><a href="<?= Url::to(['site/signup']); ?>">Регистрация</a></li>
+
+                        <?php if ($username != 'Гость'): ?>
+                        <li><a href="<?= Url::to(['site/logout']); ?>">Выйти</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Мой профиль <b class="caret"></b></a>
+                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Твиты <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="filter-category.html">Category</a></li>
-                        <li><a href="filter-author.html">Author</a></li>
-                        <li><a href="filter-date.html">Date</a></li>
+                        <li><a href="<?= Url::to(['geeks/index']); ?>">Лента</a></li>
+                        <li><a href="<?= Url::to(['geeks/create']); ?>">Создать</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -59,6 +63,7 @@ MainAsset::register($this);
                 </li>
                 <li><a href="page-about.html">О нас</a></li>
                 <li><a href="page-contact.html">Контакты</a></li>
+                </ul>
         </div>
     </div>
 </div>
