@@ -8,7 +8,7 @@ use yii\bootstrap\Alert;
 ?>
 <?php $form = ActiveForm::begin(); ?>
 
-<?= $form->field($model, 'text')->label('Введите ваш твит:') ?>
+<?= $form->field($model, 'text')->textarea()->label('Введите ваш твит:') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
