@@ -37,13 +37,12 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->findIdentity(Yii::$
                     <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown"><?=$username ?><b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if ($username == 'Гость'): ?>
-                        <li><a href="<?= Url::to(['site/login']); ?>">Войти</a></li>
+                            <li><a href="<?= Url::to(['site/login']); ?>">Войти</a></li>
+                            <li><a href="<?= Url::to(['site/signup']); ?>">Регистрация</a></li>
                         <?php endif; ?>
 
-                        <li><a href="<?= Url::to(['site/signup']); ?>">Регистрация</a></li>
-
                         <?php if ($username != 'Гость'): ?>
-                        <li><a href="<?= Url::to(['site/logout']); ?>">Выйти</a></li>
+                            <li><a href="<?= Url::to(['site/logout']); ?>">Выйти</a></li>
                         <?php endif; ?>
                     </ul>
                 </li>
