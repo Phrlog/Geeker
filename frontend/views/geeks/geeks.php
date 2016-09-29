@@ -28,6 +28,7 @@ use Yii;
                                 <h2 class="blog-post-title"><?= Html::encode($geek->text) ?></h2>
                             </a>
                             <p></p>
+                            <button type="button" class="btn btn-primary"><i class="fa fa-heart"></i></button>
                             <a class="blog-post-share pull-right" href="#">
                                 <i class="material-icons">&#xE80D;</i>
                             </a>
