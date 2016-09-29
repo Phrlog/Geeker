@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 ?>
 <section class="blog-post">
@@ -20,6 +21,9 @@ use yii\bootstrap\ActiveForm;
                 <?= $form->field($model, 'password')->passwordInput() ?>
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
                 <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <div class="btn-group">
+                    <a href="<?= Url::to('site/signup'); ?>"<button type="button" class="btn btn-primary"></button>Регистрация</a>
+                </div>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
