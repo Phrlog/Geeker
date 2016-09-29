@@ -56,15 +56,15 @@ class GeeksController extends Controller
      */
     public function actionIndex()
     {
-        return $this->actionGeeks();
+        return $this->redirect('geeks/all');
     }
 
-    public function actionGeeks()
+    public function actionAll()
     {
         $geeks = new Geeks();
         $geeks = $geeks->find()->all();
 
-        return $this->render('geeks',[
+        return $this->render('all',[
             'geeks' => $geeks
         ]);
     }
@@ -121,6 +121,11 @@ class GeeksController extends Controller
         return $this->render('create', [
             'model'  => $model,
         ]);
+    }
+
+    public function actionFeed()
+    {
+
     }
 
 

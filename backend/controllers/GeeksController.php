@@ -25,10 +25,10 @@ class GeeksController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'geeks', 'create', 'create-date-geek', 'edit', 'delete'],
+                'only' => ['index', 'all', 'create', 'create-date-geek', 'edit', 'delete'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'geeks', 'create', 'create-date-geek', 'edit', 'delete'],
+                        'actions' => ['index', 'all', 'create', 'create-date-geek', 'edit', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -44,15 +44,15 @@ class GeeksController extends Controller
 
     public function actionIndex()
     {
-        return $this->actionGeeks();
+        return $this->redirect('geeks/all');
     }
 
-    public function actionGeeks()
+    public function actionAll()
     {
         $geeks = new Geeks();
         $geeks = $geeks->find()->all();
 
-        return $this->render('show-geeks',[
+        return $this->render('all',[
             'geeks' => $geeks
         ]);
     }

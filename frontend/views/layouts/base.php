@@ -49,7 +49,8 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->findIdentity(Yii::$
                 <li class="dropdown">
                     <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Твиты <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?= Url::to(['geeks/index']); ?>">Лента</a></li>
+                        <li><a href="<?= Url::to(['geeks/all']); ?>">Все твиты</a></li>
+                        <li><a href="<?= Url::to(['geeks/feed']); ?>">Ваша лента</a></li>
                         <li><a href="<?= Url::to(['geeks/create']); ?>">Создать</a></li>
                     </ul>
                 </li>

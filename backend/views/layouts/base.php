@@ -194,11 +194,11 @@ AdminAsset::register($this);
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li class="item">
-                                        <a href="<?= Url::to(['user/users']); ?>">
+                                        <a href="<?= Url::to(['user/all']); ?>">
                                             Показать всех
                                         </a>
                                     </li>
-                                </ul>
+                                </ul>   
                             </li>
                         </ul>
                     </div>

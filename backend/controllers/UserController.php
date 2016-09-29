@@ -42,15 +42,15 @@ class UserController extends Controller
 
     public function actionIndex()
     {
-        return $this->actionUsers();
+        return $this->redirect('users/all');
     }
 
-    public function actionUsers()
+    public function actionAll()
     {
         $users = new User();
         $users = $users->find()->all();
 
-        return $this->render('show-users',[
+        return $this->render('all',[
             'users' => $users
         ]);
     }
@@ -71,7 +71,7 @@ class UserController extends Controller
 
         Geeks::deleteAll(['user_id' => $user->id]);
 
-        return $this->redirect(["users"]);
+        return $this->redirect(["all"]);
     }
 
     public function actionUnban($id)
@@ -88,7 +88,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return $this->redirect(["users"]);
+        return $this->redirect(["all"]);
     }
 
     public function actionShow()
