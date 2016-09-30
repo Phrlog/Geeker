@@ -9,7 +9,8 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use common\models\GeekForm;
 use yii\web\UploadedFile;
-
+use common\models\User;
+use yii\db\Query;
 /**
  * Geeks controller
  */
@@ -27,10 +28,10 @@ class GeeksController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'geeks', 'create', 'view'],
+                'only' => ['index', 'geeks', 'create', 'view', 'feed'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'index', 'geeks', 'view'],
+                        'actions' => ['create', 'index', 'geeks', 'view', 'feed'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -125,8 +126,22 @@ class GeeksController extends Controller
 
     public function actionFeed()
     {
+        $query = new Query;
+        $query->select('subscribe_id')
+            ->from('subscription')
+            ->where(['user_id' => Yii::$app->user->id]);
+        $users = $query->all();
 
+        $query = 'user_id=' . Yii::$app->user->id;
+        for ($i = 0; $i < count($users); ++$i){
+            $query.= ' OR user_id=' . $users[$i]['subscribe_id'];
+        }
+
+        $geeks = Geeks::find()->where($query)->orderBy(['created_at' => SORT_DESC])->all();
+
+        return $this->render('all',[
+            'geeks' => $geeks
+        ]);
     }
-
 
 }
