@@ -13,6 +13,7 @@ class MainAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
 
+        'css/site.css',
         /* Bootstrap core CSS and Material Bootstrap */
         'css/bootstrap.min.css',
         'css/font-awesome.min.css',
@@ -38,6 +39,7 @@ class MainAsset extends AssetBundle
         'js/material.min.js',
         'js/material-scrolltop.js',
         'js/main.js',
+        'js/affix.js',
         'js/init.js'
     ];
     public $depends = [
