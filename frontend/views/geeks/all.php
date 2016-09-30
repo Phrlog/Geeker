@@ -20,7 +20,7 @@ use Yii;
 
                     <div class="panel-body">
                         <div class="blog-post-meta">
-                            <span class="label label-light label-primary"><?= $geek->getAuthor()->username ?></span>
+                            <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]) ?>"><span class="label label-light label-primary"><?= $geek->getAuthor()->username ?></span></a>
                             <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
                         </div>
                         <div class="blog-post-content">
