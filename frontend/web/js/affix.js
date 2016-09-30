@@ -6,12 +6,12 @@ $(function(){
     });
 });
 
-$('#subscribe_button').mouseover(function(){
+$('.subscribe_button').mouseover(function(){
     $(this).attr('class', 'btn btn-danger btn-lg');
     $(this).text('Отписаться');
 });
 
-$('#subscribe_button').mouseleave(function(){
+$('.subscribe_button').mouseleave(function(){
     $(this).attr('class', 'btn btn-success btn-lg');
     $(this).text('Подписаны');
 });
