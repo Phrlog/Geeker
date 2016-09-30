@@ -2,6 +2,7 @@
 /* @var $geek common\models\Geeks */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 ?>
 
 <div class="col-sm-12">
@@ -9,7 +10,7 @@ use yii\helpers\Html;
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="blog-post-meta">
-                    <span class="label label-light label-success"><?= $geek->getAuthor()->username ?></span>
+                    <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]); ?>"><span class="label label-light label-success"><?= $geek->getAuthor()->username ?></span></a>
                     <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
                 </div>
 
