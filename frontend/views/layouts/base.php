@@ -42,6 +42,7 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->findIdentity(Yii::$
                         <?php endif; ?>
 
                         <?php if ($username != 'Гость'): ?>
+                            <li><a href="<?= Url::to(['user/my-profile']); ?>">Мой профиль</a></li>
                             <li><a href="<?= Url::to(['site/logout']); ?>">Выйти</a></li>
                         <?php endif; ?>
                     </ul>
@@ -50,15 +51,19 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->findIdentity(Yii::$
                     <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Твиты <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= Url::to(['geeks/all']); ?>">Все твиты</a></li>
-                        <li><a href="<?= Url::to(['geeks/feed']); ?>">Ваша лента</a></li>
-                        <li><a href="<?= Url::to(['geeks/create']); ?>">Создать</a></li>
+                        <?php if ($username != 'Гость'): ?>
+                            <li><a href="<?= Url::to(['geeks/feed']); ?>">Моя лента</a></li>
+                            <li><a href="<?= Url::to(['geeks/create']); ?>">Создать</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Друзья <b class="caret"></b></a>
+                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Пользователи <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="post-image.html">Image post</a></li>
-                        <li><a href="post-video.html">Video post</a></li>
+                        <li><a href="<?= Url::to(['user/all']); ?>">Все пользователи</a></li>
+                        <?php if ($username != 'Гость'): ?>
+                            <li><a href="<?= Url::to(['user/friends']); ?>">Мои друзья</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
                 <li><a href="page-about.html">О нас</a></li>
