@@ -5,7 +5,6 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use common\models\Subscription;
 use Yii;
 
 ?>
@@ -16,19 +15,15 @@ use Yii;
         </header>
 
         <?php if ($user->isUserAdmin($user->username)): ?>
-        <div class="profile-label">
-            <span class="label label-danger">Admin</span>
-        </div>
+            <div class="profile-label">
+                <span class="label label-danger">Admin</span>
+            </div>
         <?php endif; ?>
 
         <div class="panel-body">
             <p>Подписаны: <b><?= $me ?></b></p>
             <p>Подписан: <b><?= $to ?></b></p>
-            <?php if (Subscription::isRelationExist(Yii::$app->user->id, $user->id)): ?>
-                <a href="<?= Url::to(['user/unsubscribe', 'id' => $user->id]); ?>"><button type="button" class="btn btn-success btn-lg subscribe_button">Подписан</button></a>
-            <?php else: ?>
-                <a href="<?= Url::to(['user/subscribe', 'id' => $user->id]); ?>"><button type="button" class="btn btn-info btn-lg">Подписаться</button></a>
-            <?php endif; ?>
+            <a href="<?= Url::to(['site/logout']) ?>"><button type="button" class="btn btn-warning btn-raised">Выйти</button</a>
         </div>
 
     </div>
@@ -66,3 +61,4 @@ use Yii;
         </div>
     </div>
 </div>
+
