@@ -9,6 +9,7 @@ use yii\filters\AccessControl;
 use common\models\User;
 use yii\filters\VerbFilter;
 use common\models\Subscription;
+use yii\db\Query;
 
 /**
  * User controller
@@ -24,12 +25,17 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index' ,'users', 'show'],
+                'only' => ['index' ,'all', 'profile', 'friends', 'my-profile', 'subscribe', 'unsubscribe'],
                 'rules' => [
                     [
-                        'actions' => ['index' ,'users', 'show'],
+                        'actions' => ['index' ,'all', 'profile', 'friends', 'my-profile', 'subscribe', 'unsubscribe' ],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['index' ,'all', 'profile'],
+                        'allow' => true,
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -56,6 +62,33 @@ class UserController extends Controller
         ]);
     }
 
+    public function actionFriends()
+    {
+        $query = new Query;
+        $query->select('subscribe_id')
+            ->from('subscription')
+            ->where(['user_id' => Yii::$app->user->id]);
+        $users = $query->all();
+
+        if (count($users) > 1) {
+            $query = 'id=' . $users[0]['subscribe_id'];
+            for ($i = 1; $i < count($users); $i++){
+                $query.= ' OR id=' . $users[$i]['subscribe_id'];
+            }
+        } elseif (count($users) == 1) {
+            $query = 'id=' . $users[0]['subscribe_id'];
+        } else {
+            return $this->redirect('users/all');
+        }
+
+        $users = User::find()->where($query)->all();
+
+        return $this->render('all',[
+            'users' => $users
+        ]);
+
+    }
+
     public function actionProfile($id)
     {
         if (Yii::$app->user->id == $id) {
@@ -63,6 +96,9 @@ class UserController extends Controller
         }
 
         $user = User::findOne(['id' => $id]);
+
+        $sub_me = Subscription::find()->where(['subscribe_id' => $id])->count();
+        $sub_to = Subscription::find()->where(['user_id' => $id])->count();
 
         if ($user === null) {
             throw new NotFoundHttpException;
@@ -72,13 +108,31 @@ class UserController extends Controller
 
         return $this->render('profile',[
             'geeks' => $user_geeks,
-            'user' => $user
+            'user' => $user,
+            'me' => $sub_me,
+            'to' => $sub_to
         ]);
     }
 
     public function actionMyProfile()
     {
+        $user = User::findOne(['id' => Yii::$app->user->id]);
 
+        if ($user === null) {
+            throw new NotFoundHttpException;
+        }
+
+        $sub_me = Subscription::find()->where(['subscribe_id' => Yii::$app->user->id])->count();
+        $sub_to = Subscription::find()->where(['user_id' => Yii::$app->user->id])->count();
+
+        $user_geeks = Geeks::findAll(['user_id' => Yii::$app->user->id]);
+
+        return $this->render('my-profile',[
+            'geeks' => $user_geeks,
+            'user' => $user,
+            'me' => $sub_me,
+            'to' => $sub_to
+        ]);
     }
 
     public function actionSubscribe($id)
