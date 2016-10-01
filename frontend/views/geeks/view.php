@@ -10,18 +10,15 @@ use yii\helpers\Url;
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="blog-post-meta">
-                    <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]); ?>"><span class="label label-light label-success"><?= $geek->getAuthor()->username ?></span></a>
+                    <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]); ?>">
+                        <span class="label label-light label-success"><?= Html::encode($geek->getAuthor()->username) ?></span></a>
                     <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
                 </div>
-
                 <?php if ($geek->image): ?>
                     <?= Html::img(Yii::$app->urlManagerBackend->createUrl($geek->image), ['class' => "img-responsive"]) ?>
                 <?php endif; ?>
-
                 <div class="blog-post-content">
-                    <a href="post-image.html">
                         <h2 class="blog-post-title"><?= Html::encode($geek->text) ?></h2>
-                    </a>
                     <a class="blog-post-share pull-right" href="#">
                         <i class="material-icons">&#xE80D;</i>
                     </a>

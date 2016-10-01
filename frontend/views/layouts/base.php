@@ -34,7 +34,8 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->findIdentity(Yii::$
         <div class="navbar-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">
                 <li class="active dropdown">
-                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown"><?=$username ?><b class="caret"></b></a>
+                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown"><?= Html::encode($username) ?>
+                        <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if ($username == 'Гость'): ?>
                             <li><a href="<?= Url::to(['site/login']); ?>">Войти</a></li>

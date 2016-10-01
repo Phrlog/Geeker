@@ -2,6 +2,8 @@
 /* @var $this yii\web\View */
 /* @var array $geeks common\models\Geeks */
 /* @var $user common\models\User */
+/* @var $me   integer */
+/* @var $to   integer */
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -12,31 +14,31 @@ use Yii;
 <div class="col-sm-4">
     <div class="panel panel-default floating">
         <header class="main-box-header clearfix">
-            <h2><?= $user->username ?></h2>
+            <h2><?= Html::encode($user->username) ?></h2>
         </header>
-
         <?php if ($user->isUserAdmin($user->username)): ?>
-        <div class="profile-label">
-            <span class="label label-danger">Admin</span>
-        </div>
+            <div class="profile-label">
+                <span class="label label-danger">Admin</span>
+            </div>
         <?php endif; ?>
-
         <div class="panel-body">
             <p>Подписаны: <b><?= $me ?></b></p>
             <p>Подписан: <b><?= $to ?></b></p>
             <?php if (Subscription::isRelationExist(Yii::$app->user->id, $user->id)): ?>
-                <a href="<?= Url::to(['user/unsubscribe', 'id' => $user->id]); ?>"><button type="button" class="btn btn-success btn-lg subscribe_button">Подписан</button></a>
+                <a href="<?= Url::to(['user/unsubscribe', 'id' => $user->id]); ?>">
+                    <button type="button" class="btn btn-success btn-lg subscribe_button">Подписан</button>
+                </a>
             <?php else: ?>
-                <a href="<?= Url::to(['user/subscribe', 'id' => $user->id]); ?>"><button type="button" class="btn btn-info btn-lg">Подписаться</button></a>
+                <a href="<?= Url::to(['user/subscribe', 'id' => $user->id]); ?>">
+                    <button type="button" class="btn btn-info btn-lg">Подписаться</button>
+                </a>
             <?php endif; ?>
         </div>
-
     </div>
 </div>
 <div class="col-sm-8 blog-main">
     <div class="row">
         <div class="col-sm-12">
-
             <?php foreach ($geeks as $geek): ?>
                 <section class="blog-post">
                     <div class="panel panel-default">
@@ -45,7 +47,8 @@ use Yii;
                         <?php endif; ?>
                         <div class="panel-body">
                             <div class="blog-post-meta">
-                                <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]) ?>"><span class="label label-light label-primary"><?= $geek->getAuthor()->username ?></span></a>
+                                <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]) ?>">
+                                    <span class="label label-light label-primary"><?= Html::encode($geek->getAuthor()->username) ?></span></a>
                                 <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
                             </div>
                             <div class="blog-post-content">
@@ -62,7 +65,6 @@ use Yii;
                     </div>
                 </section>
             <?php endforeach; ?>
-
         </div>
     </div>
 </div>
