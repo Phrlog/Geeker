@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
+use yii\db\Query;
 
 /**
  * User model
@@ -236,5 +237,31 @@ class User extends ActiveRecord implements IdentityInterface
         } else {
             return false;
         }
+    }
+    
+    public function getUsersId($id, $param)
+    {
+        $query = new Query;
+        $query->select($param['select'])
+            ->from('subscription')
+            ->where([$param['where'] => $id]);
+
+        return $users_id = $query->all();
+    }
+
+    public function makeUsersQuery($users_id, $param)
+    {
+        if (count($users_id) > 1) {
+            $query = 'id=' . $users_id[0][$param];
+            for ($i = 1; $i < count($users_id); $i++){
+                $query.= ' OR id=' . $users_id[$i][$param];
+            }
+        } elseif (count($users_id) == 1) {
+            $query = 'id=' . $users_id[0][$param];
+        } else {
+            return null;
+        }
+
+        return $query;
     }
 }
