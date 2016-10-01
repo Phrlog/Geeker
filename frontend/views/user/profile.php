@@ -22,8 +22,8 @@ use Yii;
             </div>
         <?php endif; ?>
         <div class="panel-body">
-            <p>Подписаны: <b><?= $me ?></b></p>
-            <p>Подписан: <b><?= $to ?></b></p>
+            <p>Подписаны: <a href="<?= Url::to(['user/subscribers', 'id' =>  $user->id]) ?>"><b><?= $me ?></b></p></a>
+            <p>Подписан: <a href="<?= Url::to(['user/subscriptions', 'id' =>  $user->id]) ?>"><b><?= $to ?></b></p></a>
             <?php if (Subscription::isRelationExist(Yii::$app->user->id, $user->id)): ?>
                 <a href="<?= Url::to(['user/unsubscribe', 'id' => $user->id]); ?>">
                     <button type="button" class="btn btn-success btn-lg subscribe_button">Подписан</button>

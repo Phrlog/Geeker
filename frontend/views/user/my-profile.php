@@ -21,8 +21,8 @@ use Yii;
             </div>
         <?php endif; ?>
         <div class="panel-body">
-            <p>Подписаны: <b><?= $me ?></b></p>
-            <p>Подписан: <b><?= $to ?></b></p>
+            <p>Подписаны: <a href="<?= Url::to(['user/subscribers', 'id' =>  $user->id]) ?>"><b><?= $me ?></b></p></a>
+            <p>Подписан: <a href="<?= Url::to(['user/subscriptions', 'id' =>  $user->id]) ?>"><b><?= $to ?></b></p></a>
             <a href="<?= Url::to(['site/logout']) ?>">
                 <button type="button" class="btn btn-warning btn-raised">Выйти</button
             </a>
