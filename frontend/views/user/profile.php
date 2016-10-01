@@ -48,7 +48,7 @@ use Yii;
                         <div class="panel-body">
                             <div class="blog-post-meta">
                                 <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]) ?>">
-                                    <span class="label label-light label-primary"><?= Html::encode($geek->getAuthor()->username) ?></span></a>
+                                    <span class="label label-light label-primary"><?= Html::encode($geek->getUser()->select(['username'])->one()->username) ?></span></a>
                                 <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
                             </div>
                             <div class="blog-post-content">

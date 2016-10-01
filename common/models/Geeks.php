@@ -87,11 +87,4 @@ class Geeks extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    /**
-     * @return \common\models\User;
-     */
-    public function getAuthor()
-    {
-        return User::find()->where(['id' => $this->user_id])->one();
-    }
 }

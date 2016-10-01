@@ -11,7 +11,7 @@ use yii\helpers\Url;
             <div class="panel-body">
                 <div class="blog-post-meta">
                     <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]); ?>">
-                        <span class="label label-light label-success"><?= Html::encode($geek->getAuthor()->username) ?></span></a>
+                        <span class="label label-light label-success"><?= Html::encode($geek->getUser()->select(['username'])->one()->username) ?></span></a>
                     <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
                 </div>
                 <?php if ($geek->image): ?>

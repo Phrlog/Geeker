@@ -42,7 +42,7 @@ use Yii;
                             <div class="blog-post-meta">
                                 <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]) ?>">
                                     <span class="label label-light label-primary">
-                                        <?= Html::encode($geek->getAuthor()->username) ?>
+                                        <?= Html::encode($user->username) ?>
                                     </span>
                                 </a>
                                 <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
