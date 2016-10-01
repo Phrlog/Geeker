@@ -64,27 +64,22 @@ class UserController extends Controller
 
     public function actionFriends()
     {
-        $query = new Query;
-        $query->select('subscribe_id')
-            ->from('subscription')
-            ->where(['user_id' => Yii::$app->user->id]);
-        $users = $query->all();
+        $user = new User();
+        $param= ['select' => 'subscribe_id', 'where' => 'user_id'];
+        $users_id = $user->getUsersId(Yii::$app->user->id, $param);
+        $query = $user->makeUsersQuery($users_id, $param['select']);
 
-        if (count($users) > 1) {
-            $query = 'id=' . $users[0]['subscribe_id'];
-            for ($i = 1; $i < count($users); $i++){
-                $query.= ' OR id=' . $users[$i]['subscribe_id'];
-            }
-        } elseif (count($users) == 1) {
-            $query = 'id=' . $users[0]['subscribe_id'];
-        } else {
-            return $this->redirect('users/all');
-        }
+        $subscriptions = $query == null ? [] : User::find()->where($query)->all();
 
-        $users = User::find()->where($query)->all();
+        $param= ['select' => 'user_id', 'where' => 'subscribe_id'];
+        $users_id = $user->getUsersId(Yii::$app->user->id, $param);
+        $query = $user->makeUsersQuery($users_id, $param['select']);
 
-        return $this->render('all',[
-            'users' => $users
+        $subscribers = $query == null ? [] : User::find()->where($query)->all();
+
+        return $this->render('friends',[
+            'subscriptions' => $subscriptions,
+            'subscribers' => $subscribers
         ]);
 
     }
@@ -155,7 +150,7 @@ class UserController extends Controller
             $sub->save();
         }
 
-        $this->redirect(['user/profile', 'id' => $id]);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     public function actionUnsubscribe($id)
@@ -176,7 +171,7 @@ class UserController extends Controller
             $sub->findOne(['user_id' => Yii::$app->user->id, 'subscribe_id' => $id])->delete();
         }
 
-        $this->redirect(['user/profile', 'id' => $id]);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
 }
