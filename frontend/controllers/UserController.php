@@ -54,11 +54,14 @@ class UserController extends Controller
 
     public function actionAll()
     {
+        $title = 'Все пользователи';
+
         $users = new User();
         $users = $users->find()->all();
 
         return $this->render('all',[
-            'users' => $users
+            'users' => $users,
+            'title' => $title
         ]);
     }
 
@@ -174,4 +177,37 @@ class UserController extends Controller
         return $this->redirect(Yii::$app->request->referrer);
     }
 
+    public function actionSubscribers($id)
+    {
+        $user = new User();
+        $title = 'Подписчики пользователя ' . $user->find()->select(['username'])->where(['id' => $id])->one()->username;
+
+        $param= ['select' => 'user_id', 'where' => 'subscribe_id'];
+        $users_id = $user->getUsersId($id, $param);
+        $query = $user->makeUsersQuery($users_id, $param['select']);
+
+        $subscribers = $query == null ? [] : User::find()->where($query)->all();
+
+        return $this->render('all',[
+            'users' => $subscribers,
+            'title' => $title
+        ]);
+    }
+
+    public function actionSubscriptions($id)
+    {
+        $user = new User();
+        $title = 'Подписки пользователя ' . $user->find()->select(['username'])->where(['id' => $id])->one()->username;
+
+        $param= ['select' => 'subscribe_id', 'where' => 'user_id'];
+        $users_id = $user->getUsersId($id, $param);
+        $query = $user->makeUsersQuery($users_id, $param['select']);
+
+        $subscriptions = $query == null ? [] : User::find()->where($query)->all();
+
+        return $this->render('all',[
+            'users' => $subscriptions,
+            'title' => $title
+        ]);
+    }
 }
