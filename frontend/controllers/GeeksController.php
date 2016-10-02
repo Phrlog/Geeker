@@ -126,22 +126,21 @@ class GeeksController extends Controller
 
     public function actionFeed()
     {
-        $query = new Query;
-        $query->select('subscribe_id')
-            ->from('subscription')
-            ->where(['user_id' => Yii::$app->user->id]);
-        $users = $query->all();
+        $user = new User();
+        $param= ['select' => 'subscribe_id', 'where' => 'user_id'];
+        $users_id = $user->getUsersId(Yii::$app->user->id, $param);
+        $query = $user->makeUsersQuery($users_id, $param);
 
-        $query = 'user_id=' . Yii::$app->user->id;
-        for ($i = 0; $i < count($users); ++$i){
-            $query.= ' OR user_id=' . $users[$i]['subscribe_id'];
-        }
-
-        $geeks = Geeks::find()->where($query)->orderBy(['created_at' => SORT_DESC])->all();
+        $geeks = $query == null ? [] : Geeks::find()->where($query)->orWhere(['user_id' => Yii::$app->user->id ])->orderBy(['created_at' => SORT_DESC])->all();
 
         return $this->render('all',[
             'geeks' => $geeks
         ]);
+    }
+
+    public function actionLike()
+    {
+
     }
 
 }
