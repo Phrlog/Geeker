@@ -15,7 +15,7 @@ use yii\helpers\Url;
                     <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
                 </div>
                 <?php if ($geek->image): ?>
-                    <?= Html::img(Yii::$app->urlManagerBackend->createUrl($geek->image), ['class' => "img-responsive"]) ?>
+                    <?= Html::img(Yii::$app->UrlManager->createUrl($geek->image), ['class' => "img-responsive"]) ?>
                 <?php endif; ?>
                 <div class="blog-post-content">
                         <h2 class="blog-post-title"><?= Html::encode($geek->text) ?></h2>

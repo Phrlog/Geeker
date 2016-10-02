@@ -165,7 +165,7 @@ class GeeksController extends Controller
 
         $geek->delete();
 
-        return $this->redirect(["geeks"]);
+        return $this->redirect(["geeks/all"]);
     }
 
 }

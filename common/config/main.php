@@ -21,9 +21,9 @@ return [
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ]
         ],
-        'urlManagerBackend' => [
+        'urlManagerFrontend' => [
             'class' => 'yii\web\urlManager',
-            'baseUrl' => 'http://admin.geek.brains',
+            'baseUrl' => 'http://geek.brains',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [

@@ -43,7 +43,7 @@ use Yii;
                 <section class="blog-post">
                     <div class="panel panel-default">
                         <?php if ($geek->thumbnail): ?>
-                            <?= Html::img(Yii::$app->urlManagerBackend->createUrl($geek->image), ['class' => "img-responsive"]) ?>
+                            <?= Html::img(Yii::$app->UrlManager->createUrl($geek->image), ['class' => "img-responsive"]) ?>
                         <?php endif; ?>
                         <div class="panel-body">
                             <div class="blog-post-meta">
