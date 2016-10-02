@@ -252,12 +252,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function makeUsersQuery($users_id, $param)
     {
         if (count($users_id) > 1) {
-            $query = 'id=' . $users_id[0][$param];
+            $query = $param['where']. '=' . $users_id[0][$param['select']];
             for ($i = 1; $i < count($users_id); $i++){
-                $query.= ' OR id=' . $users_id[$i][$param];
+                $query.= ' OR ' . $param['where'] . '=' . $users_id[$i][$param['select']];
             }
         } elseif (count($users_id) == 1) {
-            $query = 'id=' . $users_id[0][$param];
+            $query = $param['where']. '=' . $users_id[0][$param['select']];
         } else {
             return null;
         }
