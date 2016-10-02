@@ -70,13 +70,15 @@ class UserController extends Controller
         $user = new User();
         $param= ['select' => 'subscribe_id', 'where' => 'user_id'];
         $users_id = $user->getUsersId(Yii::$app->user->id, $param);
-        $query = $user->makeUsersQuery($users_id, $param['select']);
+        $param['where'] = 'id';
+        $query = $user->makeUsersQuery($users_id, $param);
 
         $subscriptions = $query == null ? [] : User::find()->where($query)->all();
 
         $param= ['select' => 'user_id', 'where' => 'subscribe_id'];
         $users_id = $user->getUsersId(Yii::$app->user->id, $param);
-        $query = $user->makeUsersQuery($users_id, $param['select']);
+        $param['where'] = 'id';
+        $query = $user->makeUsersQuery($users_id, $param);
 
         $subscribers = $query == null ? [] : User::find()->where($query)->all();
 
