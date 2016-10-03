@@ -2,9 +2,12 @@
 /* @var $this yii\web\View */
 /* @var array $geeks common\models\Geeks */
 
+use frontend\assets\LikesAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use Yii;
+LikesAsset::register($this);
+use common\models\Likes;
 
 ?>
 <?php foreach ($geeks as $geek): ?>
@@ -26,8 +29,12 @@ use Yii;
                                 <a href="<?= Url::to(['view', 'id' => $geek->id]); ?>">
                                     <h2 class="blog-post-title"><?= Html::encode($geek->text) ?></h2>
                                 </a>
-                                <p></p>
-                                <button type="button" class="btn btn-primary"><i class="fa fa-heart"></i></button>
+                                <div class="like-panel" id="<?= $geek->id ?>">
+                                    <span><?= Likes::find()->where(['geek_id' => $geek->id])->count() ?></span>
+                                    <button type="button" data-url="<?= Url::to(['geeks/like'], true) ?>" data-id="<?= $geek->id ?>" class="btn btn-primary like">
+                                        <i class="fa fa-heart <?= Likes::isRelationExist(\Yii::$app->user->id, $geek->id) ? "like" : '';?>"></i>
+                                    </button>
+                                </div>
                                 <a class="blog-post-share pull-right" href="#">
                                     <i class="material-icons">&#xE80D;</i>
                                 </a>
