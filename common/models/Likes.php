@@ -62,4 +62,9 @@ class Likes extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    public static function isRelationExist($id, $geek_id)
+    {
+        return Likes::find()->where(['user_id' => $id, 'geek_id' => $geek_id])->count();
+    }
 }
