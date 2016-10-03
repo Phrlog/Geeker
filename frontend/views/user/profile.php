@@ -26,7 +26,7 @@ use Yii;
             <p>Подписан: <a href="<?= Url::to(['user/subscriptions', 'id' =>  $user->id]) ?>"><b><?= $to ?></b></p></a>
             <?php if (Subscription::isRelationExist(Yii::$app->user->id, $user->id)): ?>
                 <a href="<?= Url::to(['user/unsubscribe', 'id' => $user->id]); ?>">
-                    <button type="button" class="btn btn-success btn-lg subscribe_button">Подписан</button>
+                    <button type="button" class="btn btn-success btn-lg subscribe_button">Подписаны</button>
                 </a>
             <?php else: ?>
                 <a href="<?= Url::to(['user/subscribe', 'id' => $user->id]); ?>">

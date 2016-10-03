@@ -29,7 +29,7 @@ $this->title = Html::encode($title);
                                 <p>Подписан: <a href="<?= Url::to(['user/subscriptions', 'id' =>  $user->id]) ?>"><b><?= $to ?></b></p></a>
                                 <?php if (Subscription::isRelationExist(Yii::$app->user->id, $user->id) && (Yii::$app->user->id != $user->id)): ?>
                                     <a href="<?= Url::to(['user/unsubscribe', 'id' => $user->id]); ?>">
-                                        <button type="button" class="btn btn-success btn-lg subscribe_button">Подписан
+                                        <button type="button" class="btn btn-success btn-lg subscribe_button">Подписаны
                                         </button>
                                     </a>
                                 <?php elseif (Yii::$app->user->id != $user->id): ?>
