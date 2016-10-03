@@ -10,8 +10,8 @@
 }
 
 .like-panel {
-    position: absolute;
-    bottom: 25px;
+    position: relative;
+    bottom: -30px;
 }
 
 .fa-heart.like {
