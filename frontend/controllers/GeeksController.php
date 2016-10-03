@@ -10,7 +10,10 @@ use yii\filters\VerbFilter;
 use common\models\GeekForm;
 use yii\web\UploadedFile;
 use common\models\User;
-use yii\db\Query;
+use common\models\Likes;
+use yii\web\Response;
+
+
 /**
  * Geeks controller
  */
@@ -28,15 +31,15 @@ class GeeksController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'geeks', 'create', 'view', 'feed'],
+                'only' => ['index', 'geeks', 'create', 'view', 'feed', 'like'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'index', 'geeks', 'view', 'feed'],
+                        'actions' => ['create', 'index', 'geeks', 'view', 'feed', 'like'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['index', 'geeks', 'view'],
+                        'actions' => ['index', 'geeks', 'view', 'like'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -48,6 +51,15 @@ class GeeksController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function beforeAction($action)
+    {
+        if ($action->id == 'like') {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**
@@ -140,6 +152,32 @@ class GeeksController extends Controller
 
     public function actionLike()
     {
+
+        if (Yii::$app->request->isAjax)
+        {
+            $like = new Likes();
+            $geek_id = Yii::$app->request->post('id');
+
+            if (Geeks::findOne($geek_id) === null) {
+                throw new NotFoundHttpException;
+            }
+
+            if (Likes::isRelationExist(Yii::$app->user->id, $geek_id)){
+                Likes::find()->where(['user_id' => Yii::$app->user->id, 'geek_id' => $geek_id])->one()->delete();
+                $option = 'delete';
+            } else {
+                $like->user_id = Yii::$app->user->id;
+                $like->geek_id = $geek_id;
+                $like->save();
+                $option = 'add';
+            }
+
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            $count = Likes::find()->where(['geek_id' => $geek_id])->count();
+
+            return ['status' => 'success', 'option' => $option, 'count' => $count];
+        }
 
     }
 
