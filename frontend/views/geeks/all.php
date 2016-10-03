@@ -26,7 +26,7 @@ use common\models\Likes;
                                 <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
                             </div>
                             <div class="blog-post-content">
-                                <a href="<?= Url::to(['view', 'id' => $geek->id]); ?>">
+                                <a href="<?= Url::to(['geeks/view', 'id' => $geek->id]); ?>">
                                     <h2 class="blog-post-title"><?= Html::encode($geek->text) ?></h2>
                                 </a>
                                 <div class="like-panel" id="<?= $geek->id ?>">
