@@ -8,3 +8,12 @@
     position: fixed;
     top: 75px;
 }
+
+.like-panel {
+    position: absolute;
+    bottom: 25px;
+}
+
+.fa-heart.like {
+    color: red;
+}
