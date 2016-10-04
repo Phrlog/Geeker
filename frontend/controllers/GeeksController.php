@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use Yii;
+use yii\db\Query;
 use yii\web\Controller;
 use common\models\Geeks;
 use yii\web\NotFoundHttpException;
@@ -39,7 +40,7 @@ class GeeksController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['index', 'geeks', 'view', 'like'],
+                        'actions' => ['index', 'geeks', 'view'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -74,11 +75,24 @@ class GeeksController extends Controller
 
     public function actionAll()
     {
-        $geeks = new Geeks();
-        $geeks = $geeks->find()->all();
+        $geeks = Geeks::find()
+            ->select(['geeks.*', 'user.username'])
+            ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
+            ->all();
+
+        if (Yii::$app->user->id){
+            $query = new Query();
+            $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
+            for ($i = 0; $i< count($query); $i++) {
+                $likes[] = $query[$i]['geek_id'];
+            }
+        } else {
+            $likes = [];
+        }
 
         return $this->render('all',[
-            'geeks' => $geeks
+            'geeks' => $geeks,
+            'likes' => $likes
         ]);
     }
 
@@ -138,6 +152,7 @@ class GeeksController extends Controller
 
     public function actionFeed()
     {
+        // Find geeks of users on which we subscribed
         $geeks = Geeks::find()->select(['geeks.*', 'user.username'])
         ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
         ->join('INNER JOIN', Subscription::tableName(), 'subscription.subscribe_id = user.id')
@@ -146,8 +161,16 @@ class GeeksController extends Controller
         ->orderBy(['geeks.created_at' => SORT_DESC])
         ->all();
 
+        // Find geeks that we liked
+        $query = new Query();
+        $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
+        for ($i = 0; $i< count($query); $i++) {
+            $likes[] = $query[$i]['geek_id'];
+        }
+
         return $this->render('all',[
             'geeks' => $geeks,
+            'likes' => $likes
         ]);
     }
 
