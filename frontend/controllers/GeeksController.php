@@ -12,7 +12,7 @@ use yii\web\UploadedFile;
 use common\models\User;
 use common\models\Likes;
 use yii\web\Response;
-
+use common\models\Subscription;
 
 /**
  * Geeks controller
@@ -138,15 +138,16 @@ class GeeksController extends Controller
 
     public function actionFeed()
     {
-        $user = new User();
-        $param= ['select' => 'subscribe_id', 'where' => 'user_id'];
-        $users_id = $user->getUsersId(Yii::$app->user->id, $param);
-        $query = $user->makeUsersQuery($users_id, $param);
-
-        $geeks = $query == null ? [] : Geeks::find()->where($query)->orWhere(['user_id' => Yii::$app->user->id ])->orderBy(['created_at' => SORT_DESC])->all();
+        $geeks = Geeks::find()->select(['geeks.*', 'user.username'])
+        ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
+        ->join('INNER JOIN', Subscription::tableName(), 'subscription.subscribe_id = user.id')
+        ->where(['subscription.user_id' => Yii::$app->user->id])
+        ->orWhere(['geeks.user_id' => Yii::$app->user->id])
+        ->orderBy(['geeks.created_at' => SORT_DESC])
+        ->all();
 
         return $this->render('all',[
-            'geeks' => $geeks
+            'geeks' => $geeks,
         ]);
     }
 
