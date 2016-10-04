@@ -22,6 +22,8 @@ use yii\db\ActiveRecord;
  */
 class Geeks extends \yii\db\ActiveRecord
 {
+
+    public $username;
     /**
      * @inheritdoc
      */
