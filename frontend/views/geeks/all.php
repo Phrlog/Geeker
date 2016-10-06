@@ -30,9 +30,9 @@ use common\models\Likes;
                                     <h2 class="blog-post-title"><?= Html::encode($geek->text) ?></h2>
                                 </a>
                                 <div class="like-panel" id="<?= $geek->id ?>">
-                                    <span><?= Likes::find()->where(['geek_id' => $geek->id])->count() ?></span>
+                                    <span><?= $geek->count ?></span>
                                     <button type="button" data-url="<?= Url::to(['geeks/like'], true) ?>" data-id="<?= $geek->id ?>" class="btn btn-primary like">
-                                        <i class="fa fa-heart <?= Likes::isRelationExist(\Yii::$app->user->id, $geek->id) ? "like" : '';?>"></i>
+                                        <i class="fa fa-heart <?= in_array($geek->id, $likes) ? "like" : '';?>"></i>
                                     </button>
                                 </div>
                                 <a class="blog-post-share pull-right" href="#">
