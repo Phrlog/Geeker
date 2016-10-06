@@ -24,6 +24,8 @@ class Geeks extends \yii\db\ActiveRecord
 {
 
     public $username;
+    public $count;
+
     /**
      * @inheritdoc
      */
