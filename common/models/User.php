@@ -23,12 +23,18 @@ use yii\db\Query;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property string $subscription
+ * @property string $subscribers
+ *
  */
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    public $subscriptions;
+    public $subscribers;
+    
     /**
      * @inheritdoc
      */
@@ -245,23 +251,12 @@ class User extends ActiveRecord implements IdentityInterface
         $query->select($param['select'])
             ->from('subscription')
             ->where([$param['where'] => $id]);
-
-        return $users_id = $query->all();
-    }
-
-    public function makeUsersQuery($users_id, $param)
-    {
-        if (count($users_id) > 1) {
-            $query = $param['where']. '=' . $users_id[0][$param['select']];
-            for ($i = 1; $i < count($users_id); $i++){
-                $query.= ' OR ' . $param['where'] . '=' . $users_id[$i][$param['select']];
-            }
-        } elseif (count($users_id) == 1) {
-            $query = $param['where']. '=' . $users_id[0][$param['select']];
-        } else {
-            return null;
+        $users = $query->all();
+        for ($i = 0; $i < count($users); $i++){
+            $users_id[] = $users[$i][$param['select']];
         }
 
-        return $query;
+        return $users_id;
     }
+
 }
