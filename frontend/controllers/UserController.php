@@ -117,11 +117,16 @@ class UserController extends Controller
         }
 
         // Find geeks that we liked
-        $query = new Query();
-        $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
-        for ($i = 0; $i< count($query); $i++) {
-            $likes[] = $query[$i]['geek_id'];
+        if (Yii::$app->user->id) {
+            $query = new Query();
+            $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
+            for ($i = 0; $i< count($query); $i++) {
+                $likes[] = $query[$i]['geek_id'];
+            }
+        } else {
+            $likes= [];
         }
+
 
         $geeks = Geeks::find()->select(['geeks.*', 'COUNT(likes.geek_id) as count'])
             ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
@@ -228,7 +233,6 @@ class UserController extends Controller
 
         $param= ['select' => 'user_id', 'where' => 'subscribe_id'];
         $all_id = $user->getUsersId($id, $param);
-        print_r($all_id);
         $subscribers =  User::find()
             ->select(['user.*', 'count(distinct s.subscribe_id) as subscriptions', ' count(distinct p.user_id) as subscribers'])
             ->join('LEFT JOIN', [Subscription::tableName(). ' s'], 's.user_id = user.id')
