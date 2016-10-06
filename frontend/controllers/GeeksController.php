@@ -76,8 +76,11 @@ class GeeksController extends Controller
     public function actionAll()
     {
         $geeks = Geeks::find()
-            ->select(['geeks.*', 'user.username'])
+            ->select(['geeks.*', 'user.username', 'COUNT(likes.geek_id) as count'])
             ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
+            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
+            ->groupBy(['geeks.id'])
+            ->orderBy(['geeks.created_at' => SORT_DESC])
             ->all();
 
         if (Yii::$app->user->id){
@@ -153,13 +156,15 @@ class GeeksController extends Controller
     public function actionFeed()
     {
         // Find geeks of users on which we subscribed
-        $geeks = Geeks::find()->select(['geeks.*', 'user.username'])
-        ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
-        ->join('INNER JOIN', Subscription::tableName(), 'subscription.subscribe_id = user.id')
-        ->where(['subscription.user_id' => Yii::$app->user->id])
-        ->orWhere(['geeks.user_id' => Yii::$app->user->id])
-        ->orderBy(['geeks.created_at' => SORT_DESC])
-        ->all();
+        $geeks = Geeks::find()->select(['geeks.*', 'user.username', 'COUNT(likes.geek_id) as count'])
+                ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
+                ->join('INNER JOIN', Subscription::tableName(), 'subscription.subscribe_id = user.id')
+                ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
+                ->where(['subscription.user_id' => Yii::$app->user->id])
+                ->orWhere(['geeks.user_id' => Yii::$app->user->id])
+                ->groupBy(['geeks.id'])
+                ->orderBy(['geeks.created_at' => SORT_DESC])
+                ->all();
 
         // Find geeks that we liked
         $query = new Query();
