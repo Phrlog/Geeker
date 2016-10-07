@@ -101,8 +101,12 @@ class GeeksController extends Controller
 
     public function actionView($id)
     {
-        $geek = new Geeks();
-        $geek = $geek->findOne($id);
+        $geek = Geeks::find()
+            ->select(['geeks.*', 'COUNT(likes.geek_id) as count'])
+            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
+            ->where(['id' => $id])
+            ->groupBy(['geeks.id'])
+            ->one();
 
         if ($geek === null) {
             throw new NotFoundHttpException;
