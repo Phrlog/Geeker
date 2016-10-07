@@ -12,6 +12,7 @@ use yii\db\ActiveRecord;
  *
  * @property integer $id
  * @property integer $user_id
+ * @property integer $parent_id
  * @property string $text
  * @property string $image
  * @property string $thumbnail
@@ -60,10 +61,11 @@ class Geeks extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'text'], 'required'],
-            [['user_id'], 'integer'],
+            [['user_id', 'parent_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['text', 'image', 'thumbnail'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['parent_id'], 'exist', 'skipOnError' => true, 'targetClass' => Geeks::className(), 'targetAttribute' => ['parent_id' => 'id']],
         ];
     }
 
@@ -89,6 +91,11 @@ class Geeks extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getParent()
+    {
+        return $this->hasOne(Geeks::className(), ['id' => 'parent_id']);
     }
 
 }
