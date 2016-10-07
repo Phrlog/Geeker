@@ -112,8 +112,13 @@ class GeeksController extends Controller
             throw new NotFoundHttpException;
         }
 
+        $answers = Geeks::find()
+            ->where(['parent_id' => $id])
+            ->all();
+        
         return $this->render('view', [
             'geek' => $geek,
+            'answers' => $answers
         ]);
     }
 
