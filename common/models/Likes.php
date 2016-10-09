@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-
+use yii\db\Query;
 /**
  * This is the model class for table "{{%likes}}".
  *
@@ -66,5 +66,17 @@ class Likes extends \yii\db\ActiveRecord
     public static function isRelationExist($id, $geek_id)
     {
         return Likes::find()->where(['user_id' => $id, 'geek_id' => $geek_id])->count();
+    }
+
+    public static function getUserLikes($user_id)
+    {
+        $likes = [];
+        $query = new Query();
+        $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => $user_id])->all();
+        for ($i = 0; $i < count($query); $i++) {
+            $likes[] = $query[$i]['geek_id'];
+        }
+
+        return $likes;
     }
 }
