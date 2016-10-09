@@ -83,14 +83,14 @@ class GeeksController extends Controller
             ->orderBy(['geeks.created_at' => SORT_DESC])
             ->all();
 
+        $likes = [];
+
         if (Yii::$app->user->id) {
             $query = new Query();
             $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
             for ($i = 0; $i < count($query); $i++) {
                 $likes[] = $query[$i]['geek_id'];
             }
-        } else {
-            $likes = [];
         }
 
         return $this->render('all', [
