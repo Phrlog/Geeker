@@ -14,13 +14,14 @@ class GeekForm extends Model
      * @var UploadedFile
      */
     public $imageFile;
-
+    public $parent_id;
 
     public function rules()
     {
         return [
             [['text', 'text'], 'required'],
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg']
+            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['parent_id'], 'integer']
         ];
     }
 
@@ -50,7 +51,29 @@ class GeekForm extends Model
         }
     }
 
-    /**
+    public function save()
+    {
+        $text = Yii::$app->request->post('GeekForm')['text'];
+
+        $this->imageFile = UploadedFile::getInstance($this, 'imageFile');
+
+        $geek = new Geeks();
+
+        if ($this->upload()) {
+            $path = 'upload/' . Yii::$app->user->id;
+
+            $geek->image = $path . '/original/' . $this->imageFile->baseName . '.' . $this->imageFile->extension;
+            $geek->thumbnail = $path . '/thumbnail/' . $this->imageFile->baseName . '.' . $this->imageFile->extension;
+        }
+
+        $geek->parent_id = Yii::$app->request->post('GeekForm')['parent_id'];
+        $geek->user_id = Yii::$app->user->id;
+        $geek->text = $text;
+
+        return $geek->save();
+    }
+
+/**
      * Create dir
      *
      * @param $path
@@ -65,7 +88,8 @@ class GeekForm extends Model
     public function attributeLabels()
     {
         return [
-            'imageFile' => 'Выберите изображение:'
+            'text' => 'Введите ваш твит:',
+            'imageFile' => 'Выберите изображение:',
         ];
     }
 }
