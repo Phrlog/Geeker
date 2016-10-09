@@ -23,8 +23,14 @@ use yii\db\ActiveRecord;
  */
 class Geeks extends \yii\db\ActiveRecord
 {
-
+    /**
+     * @var
+     */
     public $username;
+
+    /**
+     * @var
+     */
     public $count;
 
     /**
@@ -93,6 +99,9 @@ class Geeks extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getParent()
     {
         return $this->hasOne(Geeks::className(), ['id' => 'parent_id']);

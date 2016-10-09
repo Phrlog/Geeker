@@ -48,11 +48,21 @@ class UserController extends Controller
         ];
     }
 
+    /**
+     * Redirect to actionAll
+     *
+     * @return \yii\web\Response
+     */
     public function actionIndex()
     {
         return $this->redirect('users/all');
     }
 
+    /**
+     * Display all users
+     *
+     * @return string
+     */
     public function actionAll()
     {
         $title = 'Все пользователи';
@@ -70,6 +80,11 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Display subscriptions and subscribers
+     *
+     * @return string
+     */
     public function actionFriends()
     {
         $user = new User();
@@ -101,6 +116,13 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Display user profile
+     *
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionProfile($id)
     {
         if (Yii::$app->user->id == $id) {
@@ -108,26 +130,19 @@ class UserController extends Controller
         }
 
         $user = User::findOne(['id' => $id]);
-
-        $sub_me = Subscription::find()->where(['subscribe_id' => $id])->count();
-        $sub_to = Subscription::find()->where(['user_id' => $id])->count();
-
         if ($user === null) {
             throw new NotFoundHttpException;
         }
 
+        // Find subscriptions and subscribers
+        $sub_me = Subscription::find()->where(['subscribe_id' => $id])->count();
+        $sub_to = Subscription::find()->where(['user_id' => $id])->count();
+
         // Find geeks that we liked
-        if (Yii::$app->user->id) {
-            $query = new Query();
-            $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
-            for ($i = 0; $i< count($query); $i++) {
-                $likes[] = $query[$i]['geek_id'];
-            }
-        } else {
-            $likes= [];
-        }
+        $likes = Likes::getUserLikes(Yii::$app->user->id);
 
 
+        // Find user geeks
         $geeks = Geeks::find()->select(['geeks.*', 'COUNT(likes.geek_id) as count'])
             ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
             ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
@@ -145,6 +160,12 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Display your profile
+     *
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionMyProfile()
     {
         $user = User::findOne(['id' => Yii::$app->user->id]);
@@ -153,6 +174,7 @@ class UserController extends Controller
             throw new NotFoundHttpException;
         }
 
+        // Find subscriptions and subscribers
         $sub_me = Subscription::find()->where(['subscribe_id' => Yii::$app->user->id])->count();
         $sub_to = Subscription::find()->where(['user_id' => Yii::$app->user->id])->count();
 
@@ -180,7 +202,16 @@ class UserController extends Controller
         ]);
     }
 
-    // TODO ajax subscribe
+
+    /**
+     * Subscribe to user by id
+     *
+     * TODO ajax subscribe
+     *
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionSubscribe($id)
     {
         $user = User::findOne(['id' => Yii::$app->user->id]);
@@ -204,7 +235,16 @@ class UserController extends Controller
         return $this->redirect(Yii::$app->request->referrer);
     }
 
-    // TODO ajax subscribe
+    /**
+     * Unsubscribe to user by id
+     *
+     * TODO ajax subscribe
+     *
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Exception
+     */
     public function actionUnsubscribe($id)
     {
         $user = User::findOne(['id' => Yii::$app->user->id]);
@@ -226,6 +266,12 @@ class UserController extends Controller
         return $this->redirect(Yii::$app->request->referrer);
     }
 
+    /**
+     * User subscribers by id
+     *
+     * @param $id
+     * @return string
+     */
     public function actionSubscribers($id)
     {
         $user = new User();
@@ -247,6 +293,12 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * User subscriptions by id
+     *
+     * @param $id
+     * @return string
+     */
     public function actionSubscriptions($id)
     {
         $user = new User();

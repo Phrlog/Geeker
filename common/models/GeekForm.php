@@ -8,14 +8,24 @@ use yii\imagine;
 
 class GeekForm extends Model
 {
+    /**
+     * @var
+     */
     public $text;
 
     /**
      * @var UploadedFile
      */
     public $imageFile;
+
+    /**
+     * @var
+     */
     public $parent_id;
 
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [
@@ -51,6 +61,9 @@ class GeekForm extends Model
         }
     }
 
+    /**
+     * @return bool
+     */
     public function save()
     {
         $text = Yii::$app->request->post('GeekForm')['text'];
@@ -73,7 +86,7 @@ class GeekForm extends Model
         return $geek->save();
     }
 
-/**
+    /**
      * Create dir
      *
      * @param $path
@@ -85,6 +98,9 @@ class GeekForm extends Model
         }
     }
 
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [
