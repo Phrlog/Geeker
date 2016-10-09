@@ -9,7 +9,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use common\models\GeekForm;
-use yii\web\UploadedFile;
 use common\models\User;
 use common\models\Likes;
 use yii\web\Response;
@@ -32,10 +31,10 @@ class GeeksController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'geeks', 'create', 'view', 'feed', 'like'],
+                'only' => ['index', 'geeks', 'create', 'view', 'feed', 'like', 'answer'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'index', 'geeks', 'view', 'feed', 'like'],
+                        'actions' => ['create', 'index', 'geeks', 'view', 'feed', 'like', 'answer'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -54,6 +53,11 @@ class GeeksController extends Controller
         ];
     }
 
+    /**
+     * @param \yii\base\Action $action
+     * @return bool
+     * @throws \yii\web\BadRequestHttpException
+     */
     public function beforeAction($action)
     {
         if ($action->id == 'like' || $action->id == 'answer') {
@@ -64,7 +68,7 @@ class GeeksController extends Controller
     }
 
     /**
-     * Displays homepage.
+     * Redirect to actionAll
      *
      * @return mixed
      */
@@ -73,6 +77,11 @@ class GeeksController extends Controller
         return $this->redirect('geeks/all');
     }
 
+    /**
+     * Display all geeks, get user likes
+     *
+     * @return string
+     */
     public function actionAll()
     {
         $geeks = Geeks::find()
@@ -83,15 +92,7 @@ class GeeksController extends Controller
             ->orderBy(['geeks.created_at' => SORT_DESC])
             ->all();
 
-        $likes = [];
-
-        if (Yii::$app->user->id) {
-            $query = new Query();
-            $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
-            for ($i = 0; $i < count($query); $i++) {
-                $likes[] = $query[$i]['geek_id'];
-            }
-        }
+        $likes = Likes::getUserLikes(Yii::$app->user->id);
 
         return $this->render('all', [
             'geeks' => $geeks,
@@ -99,6 +100,13 @@ class GeeksController extends Controller
         ]);
     }
 
+    /**
+     * View geek and its answers by id
+     *
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionView($id)
     {
         $geek = Geeks::find()
@@ -122,6 +130,11 @@ class GeeksController extends Controller
         ]);
     }
 
+    /**
+     * Create new geek
+     *
+     * @return string|Response
+     */
     public function actionCreate()
     {
         $model = new GeekForm();
@@ -146,6 +159,11 @@ class GeeksController extends Controller
         ]);
     }
 
+    /**
+     * Display your and your subscriptions geeks
+     *
+     * @return string
+     */
     public function actionFeed()
     {
         // Find geeks of users on which we subscribed
@@ -160,11 +178,7 @@ class GeeksController extends Controller
             ->all();
 
         // Find geeks that we liked
-        $query = new Query();
-        $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
-        for ($i = 0; $i < count($query); $i++) {
-            $likes[] = $query[$i]['geek_id'];
-        }
+        $likes = Likes::getUserLikes(Yii::$app->user->id);
 
         return $this->render('all', [
             'geeks' => $geeks,
@@ -172,6 +186,13 @@ class GeeksController extends Controller
         ]);
     }
 
+    /**
+     * Ajax like
+     *
+     * @return array
+     * @throws NotFoundHttpException
+     * @throws \Exception
+     */
     public function actionLike()
     {
 
@@ -202,6 +223,11 @@ class GeeksController extends Controller
 
     }
 
+    /**
+     * Answer to the geek by modal form
+     *
+     * @return array|string
+     */
     public function actionAnswer()
     {
         $model = new GeekForm();
