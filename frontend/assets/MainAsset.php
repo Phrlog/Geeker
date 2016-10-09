@@ -34,7 +34,6 @@ class MainAsset extends AssetBundle
         'js/pace.min.js',
 
         /* libraries */
-        'js/jquery-1.11.3.min.js',
         'js/ripples.min.js',
         'js/material.min.js',
         'js/material-scrolltop.js',
