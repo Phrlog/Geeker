@@ -56,7 +56,7 @@ class GeeksController extends Controller
 
     public function beforeAction($action)
     {
-        if ($action->id == 'like') {
+        if ($action->id == 'like' || $action->id == 'answer') {
             $this->enableCsrfValidation = false;
         }
 
@@ -77,23 +77,23 @@ class GeeksController extends Controller
     {
         $geeks = Geeks::find()
             ->select(['geeks.*', 'user.username', 'COUNT(likes.geek_id) as count'])
-            ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
+            ->join('INNER JOIN', User::tableName(), 'user.id = geeks.user_id')
             ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
             ->groupBy(['geeks.id'])
             ->orderBy(['geeks.created_at' => SORT_DESC])
             ->all();
 
-        if (Yii::$app->user->id){
+        if (Yii::$app->user->id) {
             $query = new Query();
             $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
-            for ($i = 0; $i< count($query); $i++) {
+            for ($i = 0; $i < count($query); $i++) {
                 $likes[] = $query[$i]['geek_id'];
             }
         } else {
             $likes = [];
         }
 
-        return $this->render('all',[
+        return $this->render('all', [
             'geeks' => $geeks,
             'likes' => $likes
         ]);
@@ -115,7 +115,7 @@ class GeeksController extends Controller
         $answers = Geeks::find()
             ->where(['parent_id' => $id])
             ->all();
-        
+
         return $this->render('view', [
             'geek' => $geek,
             'answers' => $answers
@@ -125,26 +125,10 @@ class GeeksController extends Controller
     public function actionCreate()
     {
         $model = new GeekForm();
-        $text = Yii::$app->request->post('GeekForm')['text'];
 
         if ($model->load(Yii::$app->request->post())) {
 
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-
-            $geek = new Geeks();
-
-            if ($model->upload()) {
-                $path = 'upload/' . Yii::$app->user->id;
-
-                $geek->image = $path . '/original/' . $model->imageFile->baseName . '.' . $model->imageFile->extension;
-                $geek->thumbnail = $path . '/thumbnail/' . $model->imageFile->baseName . '.' . $model->imageFile->extension;
-            }
-
-
-            $geek->user_id = Yii::$app->user->id;
-            $geek->text = $text;
-
-            if ($geek->save()) {
+            if ($model->save()) {
                 $result = "Твит успешно опубликован";
                 $alert_type = 'success';
             } else {
@@ -158,7 +142,7 @@ class GeeksController extends Controller
         }
 
         return $this->render('create', [
-            'model'  => $model,
+            'model' => $model,
         ]);
     }
 
@@ -166,23 +150,23 @@ class GeeksController extends Controller
     {
         // Find geeks of users on which we subscribed
         $geeks = Geeks::find()->select(['geeks.*', 'user.username', 'COUNT(likes.geek_id) as count'])
-                ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
-                ->join('INNER JOIN', Subscription::tableName(), 'subscription.subscribe_id = user.id')
-                ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
-                ->where(['subscription.user_id' => Yii::$app->user->id])
-                ->orWhere(['geeks.user_id' => Yii::$app->user->id])
-                ->groupBy(['geeks.id'])
-                ->orderBy(['geeks.created_at' => SORT_DESC])
-                ->all();
+            ->join('INNER JOIN', User::tableName(), 'user.id = geeks.user_id')
+            ->join('INNER JOIN', Subscription::tableName(), 'subscription.subscribe_id = user.id')
+            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
+            ->where(['subscription.user_id' => Yii::$app->user->id])
+            ->orWhere(['geeks.user_id' => Yii::$app->user->id])
+            ->groupBy(['geeks.id'])
+            ->orderBy(['geeks.created_at' => SORT_DESC])
+            ->all();
 
         // Find geeks that we liked
         $query = new Query();
         $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
-        for ($i = 0; $i< count($query); $i++) {
+        for ($i = 0; $i < count($query); $i++) {
             $likes[] = $query[$i]['geek_id'];
         }
 
-        return $this->render('all',[
+        return $this->render('all', [
             'geeks' => $geeks,
             'likes' => $likes
         ]);
@@ -191,8 +175,7 @@ class GeeksController extends Controller
     public function actionLike()
     {
 
-        if (Yii::$app->request->isAjax)
-        {
+        if (Yii::$app->request->isAjax) {
             $like = new Likes();
             $geek_id = Yii::$app->request->post('id');
 
@@ -200,7 +183,7 @@ class GeeksController extends Controller
                 throw new NotFoundHttpException;
             }
 
-            if (Likes::isRelationExist(Yii::$app->user->id, $geek_id)){
+            if (Likes::isRelationExist(Yii::$app->user->id, $geek_id)) {
                 Likes::find()->where(['user_id' => Yii::$app->user->id, 'geek_id' => $geek_id])->one()->delete();
                 $option = 'delete';
             } else {
@@ -217,6 +200,31 @@ class GeeksController extends Controller
             return ['status' => 'success', 'option' => $option, 'count' => $count];
         }
 
+    }
+
+    public function actionAnswer()
+    {
+        $model = new GeekForm();
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            if ($model->save()) {
+                $status = 'Успех';
+            } else {
+                $status = 'Неудача';
+            }
+
+            return ['status' => $status];
+
+        } else if (Yii::$app->request->isAjax) {
+
+            $model->parent_id = Yii::$app->request->post('id');
+            return $this->renderAjax('answer', [
+                'model' => $model,
+            ]);
+        }
     }
 
 }
