@@ -8,15 +8,6 @@ use yii\bootstrap\Alert;
 ?>
 <div class="panel panel-default">
     <div class="panel-body">
-        <?php $form = ActiveForm::begin(); ?>
-        <?= $form->field($model, 'text')->textarea()->label('Введите ваш твит:') ?>
-        <?= $form->field($model, 'imageFile', ['template' => '<i class="fa fa-file-image-o" aria-hidden="true"></i>{input} {label}'])->fileInput(['class' => 'file']) ?>
-        <div class="form-group">
-            <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
-        </div>
-
-        <?php ActiveForm::end(); ?>
-
         <?php if (Yii::$app->session->hasFlash('success')): ?>
             <?= Alert::widget([
                 'options' => ['class' => 'alert alert-success'],
@@ -29,6 +20,16 @@ use yii\bootstrap\Alert;
                 'body' => Yii::$app->session->getFlash('error')
             ]);?>
         <?php endif; ?>
+
+        <?php $form = ActiveForm::begin(); ?>
+        <?= $form->field($model, 'text')->textarea()->label('Введите ваш твит:') ?>
+        <?= $form->field($model, 'parent_id')->textInput(['maxlength' => 255], ['class' => 'input-modal']) ?>
+        <?= $form->field($model, 'imageFile', ['template' => '<i class="fa fa-file-image-o" aria-hidden="true"></i>{input} {label}'])->fileInput(['class' => 'file']) ?>
+        <div class="form-group">
+            <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
+        </div>
+
+        <?php ActiveForm::end(); ?>
     </div>
 </div>
 
