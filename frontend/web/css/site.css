@@ -17,3 +17,10 @@
 .fa-heart.like {
     color: red;
 }
+
+.fa.fa-chevron-left {
+    position: absolute;
+    left: -10px;
+    font-size: 20px;
+    color: #009688;
+}
