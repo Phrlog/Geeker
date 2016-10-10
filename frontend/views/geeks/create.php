@@ -21,7 +21,7 @@ use yii\bootstrap\Alert;
             ]);?>
         <?php endif; ?>
 
-        <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
         <?= $form->field($model, 'text')->textarea()->label('Введите ваш твит:') ?>
         <?= $form->field($model, 'parent_id')->textInput(['maxlength' => 255], ['class' => 'input-modal']) ?>
         <?= $form->field($model, 'imageFile', ['template' => '<i class="fa fa-file-image-o" aria-hidden="true"></i>{input} {label}'])->fileInput(['class' => 'file']) ?>
