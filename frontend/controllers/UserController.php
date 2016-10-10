@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use common\models\Geeks;
+use common\models\SearchForm;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -317,6 +318,28 @@ class UserController extends Controller
         return $this->render('all',[
             'users' => $subscriptions,
             'title' => $title
+        ]);
+    }
+
+    public function actionSearch()
+    {
+        if (Yii::$app->request->isPost) {
+            $user = User::find()->where(['username' => Yii::$app->request->post('SearchForm')['username']])->one();
+            if ($user === null) {
+                throw new NotFoundHttpException;
+            } else {
+                $this->redirect(['user/profile', 'id' => $user->id]);
+            }
+        }
+        $users = User::find()
+            ->select(['username as value', 'username as label'])
+            ->asArray()
+            ->all();
+        $model = new SearchForm();
+
+        return $this->render('search', [
+            'users' => $users,
+            'model' => $model
         ]);
     }
 }
