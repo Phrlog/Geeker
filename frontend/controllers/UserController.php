@@ -188,11 +188,7 @@ class UserController extends Controller
             ->all();
 
         // Find geeks that we liked
-        $query = new Query();
-        $query = $query->select(['geek_id'])->from(Likes::tableName())->where(['user_id' => Yii::$app->user->id])->all();
-        for ($i = 0; $i< count($query); $i++) {
-            $likes[] = $query[$i]['geek_id'];
-        }
+        $likes = Likes::getUserLikes(Yii::$app->user->id);
 
         return $this->render('my-profile',[
             'geeks' => $geeks,
@@ -341,5 +337,10 @@ class UserController extends Controller
             'users' => $users,
             'model' => $model
         ]);
+    }
+
+    public function actionSettings()
+    {
+        
     }
 }
