@@ -5,7 +5,7 @@
 use frontend\assets\LikesAsset;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use Yii;
+use yii;
 LikesAsset::register($this);
 use common\models\Likes;
 
@@ -21,6 +21,11 @@ use common\models\Likes;
                         <?php endif; ?>
                         <div class="panel-body">
                             <div class="blog-post-meta">
+                                <?php if ($geek->parent_id): ?>
+                                    <a href="<?= Url::to(['geeks/view', 'id' => $geek->parent_id]) ?>">
+                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                                    </a>
+                                <?php endif; ?>
                                 <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]) ?>">
                                     <span class="label label-light label-primary"><?= Html::encode($geek->username) ?></span></a>
                                 <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>

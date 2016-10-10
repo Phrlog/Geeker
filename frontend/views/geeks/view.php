@@ -20,6 +20,11 @@ AnswerAsset::register($this);
             <?php endif; ?>
             <div class="panel-body">
                 <div class="blog-post-meta">
+                    <?php if ($geek->parent_id): ?>
+                        <a href="<?= Url::to(['geeks/view', 'id' => $geek->parent_id]) ?>">
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        </a>
+                    <?php endif; ?>
                     <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]) ?>">
                         <span class="label label-light label-primary">
                             <?= Html::encode($geek->getUser()->select(['username'])->one()->username) ?>
@@ -59,6 +64,11 @@ AnswerAsset::register($this);
                     <?php endif; ?>
                     <div class="panel-body">
                         <div class="blog-post-meta">
+                            <?php if ($answer->parent_id): ?>
+                                <a href="<?= Url::to(['geeks/view', 'id' => $answer->parent_id]) ?>">
+                                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                                </a>
+                            <?php endif; ?>
                             <a href="<?= Url::to(['user/profile', 'id' => $answer->user_id]) ?>">
                                 <span class="label label-light label-primary">
                                     <?= Html::encode($answer->getUser()->select(['username'])->one()->username) ?>
