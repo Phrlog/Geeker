@@ -65,6 +65,7 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->findIdentity(Yii::$
                         <?php if ($username != 'Гость'): ?>
                             <li><a href="<?= Url::to(['user/friends']); ?>">Мои друзья</a></li>
                         <?php endif; ?>
+                        <li><a href="<?= Url::to(['user/search']); ?>">Поиск пользователя</a></li>
                     </ul>
                 </li>
                 <li><a href="page-about.html">О нас</a></li>
