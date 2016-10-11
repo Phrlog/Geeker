@@ -68,12 +68,7 @@ class UserController extends Controller
     {
         $title = 'Все пользователи';
 
-        $users =  User::find()
-            ->select(['user.*', 'count(distinct s.subscribe_id) as subscriptions', ' count(distinct p.user_id) as subscribers'])
-            ->join('LEFT JOIN', [Subscription::tableName(). ' s'], 's.user_id = user.id')
-            ->join('LEFT JOIN', [Subscription::tableName(). ' p'], 'p.subscribe_id = user.id')
-            ->groupBy(['user.id'])
-            ->all();
+        $users =  User::getUsersById(true);
 
         return $this->render('all',[
             'users' => $users,
@@ -88,27 +83,15 @@ class UserController extends Controller
      */
     public function actionFriends()
     {
-        $user = new User();
-        $main_query =  User::find()
-            ->select(['user.*', 'count(distinct s.subscribe_id) as subscriptions', ' count(distinct p.user_id) as subscribers'])
-            ->join('LEFT JOIN', [Subscription::tableName(). ' s'], 's.user_id = user.id')
-            ->join('LEFT JOIN', [Subscription::tableName(). ' p'], 'p.subscribe_id = user.id');
-
         // Get $subscriptions of current user
         $param= ['select' => 'subscribe_id', 'where' => 'user_id'];
-        $id = $user->getUsersId(Yii::$app->user->id, $param);
-        $subscriptions = $main_query
-            ->where(['user.id' => $id])
-            ->groupBy(['user.id'])
-            ->all();
+        $id = User::getUsersId(Yii::$app->user->id, $param);
+        $subscriptions = User::getUsersById($id);
 
         // Get $subscribers of current user
         $param= ['select' => 'user_id', 'where' => 'subscribe_id'];
-        $id = $user->getUsersId(Yii::$app->user->id, $param);
-        $subscribers = $main_query
-            ->where(['user.id' => $id])
-            ->groupBy(['user.id'])
-            ->all();
+        $id = User::getUsersId(Yii::$app->user->id, $param);
+        $subscribers = User::getUsersById($id);
 
         return $this->render('friends',[
             'subscriptions' => $subscriptions,
@@ -142,15 +125,8 @@ class UserController extends Controller
         // Find geeks that we liked
         $likes = Likes::getUserLikes(Yii::$app->user->id);
 
-
         // Find user geeks
-        $geeks = Geeks::find()->select(['geeks.*', 'COUNT(likes.geek_id) as count'])
-            ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
-            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
-            ->where(['geeks.user_id' => $id])
-            ->groupBy(['geeks.id'])
-            ->orderBy(['geeks.created_at' => SORT_DESC])
-            ->all();
+        $geeks = Geeks::getUserGeeks($id);
 
         return $this->render('profile',[
             'geeks' => $geeks,
@@ -179,13 +155,8 @@ class UserController extends Controller
         $sub_me = Subscription::find()->where(['subscribe_id' => Yii::$app->user->id])->count();
         $sub_to = Subscription::find()->where(['user_id' => Yii::$app->user->id])->count();
 
-        $geeks = Geeks::find()->select(['geeks.*', 'COUNT(likes.geek_id) as count'])
-            ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
-            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
-            ->where(['geeks.user_id' => Yii::$app->user->id])
-            ->groupBy(['geeks.id'])
-            ->orderBy(['geeks.created_at' => SORT_DESC])
-            ->all();
+        // Find geeks that we liked
+        $geeks = Geeks::getUserGeeks(Yii::$app->user->id);
 
         // Find geeks that we liked
         $likes = Likes::getUserLikes(Yii::$app->user->id);
@@ -271,18 +242,11 @@ class UserController extends Controller
      */
     public function actionSubscribers($id)
     {
-        $user = new User();
-        $title = 'Подписчики пользователя ' . $user->find()->select(['username'])->where(['id' => $id])->one()->username;
+        $title = 'Подписчики пользователя ' . User::find()->select(['username'])->where(['id' => $id])->one()->username;
 
         $param= ['select' => 'user_id', 'where' => 'subscribe_id'];
-        $all_id = $user->getUsersId($id, $param);
-        $subscribers =  User::find()
-            ->select(['user.*', 'count(distinct s.subscribe_id) as subscriptions', ' count(distinct p.user_id) as subscribers'])
-            ->join('LEFT JOIN', [Subscription::tableName(). ' s'], 's.user_id = user.id')
-            ->join('LEFT JOIN', [Subscription::tableName(). ' p'], 'p.subscribe_id = user.id')
-            ->where(['user.id' => $all_id])
-            ->groupBy(['user.id'])
-            ->all();
+        $all_id = User::getUsersId($id, $param);
+        $subscribers = User::getUsersById($all_id);
 
         return $this->render('all',[
             'users' => $subscribers,
@@ -298,18 +262,11 @@ class UserController extends Controller
      */
     public function actionSubscriptions($id)
     {
-        $user = new User();
-        $title = 'Подписки пользователя ' . $user->find()->select(['username'])->where(['id' => $id])->one()->username;
+        $title = 'Подписки пользователя ' . User::find()->select(['username'])->where(['id' => $id])->one()->username;
 
         $param= ['select' => 'subscribe_id', 'where' => 'user_id'];
-        $all_id = $user->getUsersId($id, $param);
-        $subscriptions =  User::find()
-            ->select(['user.*', 'count(distinct s.subscribe_id) as subscriptions', ' count(distinct p.user_id) as subscribers'])
-            ->join('LEFT JOIN', [Subscription::tableName(). ' s'], 's.user_id = user.id')
-            ->join('LEFT JOIN', [Subscription::tableName(). ' p'], 'p.subscribe_id = user.id')
-            ->where(['user.id' => $all_id])
-            ->groupBy(['user.id'])
-            ->all();
+        $all_id = User::getUsersId($id, $param);
+        $subscriptions = User::getUsersById($all_id);
 
         return $this->render('all',[
             'users' => $subscriptions,
