@@ -107,4 +107,17 @@ class Geeks extends \yii\db\ActiveRecord
         return $this->hasOne(Geeks::className(), ['id' => 'parent_id']);
     }
 
+    public static function getUserGeeks($id)
+    {
+        $geeks = Geeks::find()->select(['geeks.*', 'COUNT(likes.geek_id) as count'])
+            ->join('INNER JOIN', User::tableName(),'user.id = geeks.user_id')
+            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
+            ->where(['geeks.user_id' => $id])
+            ->groupBy(['geeks.id'])
+            ->orderBy(['geeks.created_at' => SORT_DESC])
+            ->all();
+
+        return $geeks;
+    }
+
 }
