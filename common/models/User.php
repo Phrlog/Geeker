@@ -25,7 +25,8 @@ use yii\db\Query;
  * @property string $password write-only password
  * @property string $subscription
  * @property string $subscribers
- *
+ * @property string $avatar
+ * @property string $thumbnail
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -70,7 +71,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['status'], 'integer'],
             [['role'], 'string', 'max' => 32],
             [['created_at', 'updated_at'], 'safe'],
-            [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
+            [['username', 'password_hash', 'password_reset_token', 'email', 'avatar', 'thumbnail'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
             [['email'], 'unique'],
