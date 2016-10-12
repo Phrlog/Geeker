@@ -10,6 +10,11 @@ use common\models\Subscription;
             <div class="blog-post-content">
                 <a href="<?= Url::to(['user/profile', 'id' => $user->id]) ?>"><h2
                         class="blog-post-title"><?= Html::encode($user->username) ?></h2></a>
+                <?php if ($user->avatar): ?>
+                    <div class=" avatar">
+                        <?= Html::img(Yii::$app->UrlManager->createUrl($user->thumbnail), ['class' => "img-responsive"]) ?>
+                    </div>
+                <?php endif; ?>
                 <p>Подписаны: <a href="<?= Url::to(['user/subscribers', 'id' =>  $user->id]) ?>"><b><?= $user->subscribers ?></b></p></a>
                 <p>Подписан: <a href="<?= Url::to(['user/subscriptions', 'id' =>  $user->id]) ?>"><b><?= $user->subscriptions ?></b></p></a>
                 <?php if (Subscription::isRelationExist(Yii::$app->user->id, $user->id) && (Yii::$app->user->id != $user->id)): ?>
