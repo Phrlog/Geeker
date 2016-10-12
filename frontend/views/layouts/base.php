@@ -44,6 +44,7 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->findIdentity(Yii::$
 
                         <?php if ($username != 'Гость'): ?>
                             <li><a href="<?= Url::to(['user/my-profile']); ?>">Мой профиль</a></li>
+                            <li><a href="<?= Url::to(['user/settings']); ?>">Настройки</a></li>
                             <li><a href="<?= Url::to(['site/logout']); ?>">Выйти</a></li>
                         <?php endif; ?>
                     </ul>
