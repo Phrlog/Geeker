@@ -10,8 +10,8 @@ use yii\filters\AccessControl;
 use common\models\User;
 use yii\filters\VerbFilter;
 use common\models\Subscription;
-use yii\db\Query;
 use common\models\Likes;
+use common\models\SettingsForm;
 
 /**
  * User controller
@@ -19,6 +19,7 @@ use common\models\Likes;
 class UserController extends Controller
 {
     public $layout = 'base';
+
     /**
      * @inheritdoc
      */
@@ -27,15 +28,15 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index' ,'all', 'profile', 'friends', 'my-profile', 'subscribe', 'unsubscribe'],
+                'only' => ['index', 'all', 'profile', 'friends', 'my-profile', 'subscribe', 'unsubscribe'],
                 'rules' => [
                     [
-                        'actions' => ['index' ,'all', 'profile', 'friends', 'my-profile', 'subscribe', 'unsubscribe' ],
+                        'actions' => ['index', 'all', 'profile', 'friends', 'my-profile', 'subscribe', 'unsubscribe'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['index' ,'all', 'profile'],
+                        'actions' => ['index', 'all', 'profile'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -68,9 +69,9 @@ class UserController extends Controller
     {
         $title = 'Все пользователи';
 
-        $users =  User::getUsersById(true);
+        $users = User::getUsersById(true);
 
-        return $this->render('all',[
+        return $this->render('all', [
             'users' => $users,
             'title' => $title
         ]);
@@ -84,16 +85,16 @@ class UserController extends Controller
     public function actionFriends()
     {
         // Get $subscriptions of current user
-        $param= ['select' => 'subscribe_id', 'where' => 'user_id'];
+        $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
         $id = User::getUsersId(Yii::$app->user->id, $param);
         $subscriptions = User::getUsersById($id);
 
         // Get $subscribers of current user
-        $param= ['select' => 'user_id', 'where' => 'subscribe_id'];
+        $param = ['select' => 'user_id', 'where' => 'subscribe_id'];
         $id = User::getUsersId(Yii::$app->user->id, $param);
         $subscribers = User::getUsersById($id);
 
-        return $this->render('friends',[
+        return $this->render('friends', [
             'subscriptions' => $subscriptions,
             'subscribers' => $subscribers
         ]);
@@ -128,7 +129,7 @@ class UserController extends Controller
         // Find user geeks
         $geeks = Geeks::getUserGeeks($id);
 
-        return $this->render('profile',[
+        return $this->render('profile', [
             'geeks' => $geeks,
             'user' => $user,
             'me' => $sub_me,
@@ -161,7 +162,7 @@ class UserController extends Controller
         // Find geeks that we liked
         $likes = Likes::getUserLikes(Yii::$app->user->id);
 
-        return $this->render('my-profile',[
+        return $this->render('my-profile', [
             'geeks' => $geeks,
             'user' => $user,
             'me' => $sub_me,
@@ -244,11 +245,11 @@ class UserController extends Controller
     {
         $title = 'Подписчики пользователя ' . User::find()->select(['username'])->where(['id' => $id])->one()->username;
 
-        $param= ['select' => 'user_id', 'where' => 'subscribe_id'];
+        $param = ['select' => 'user_id', 'where' => 'subscribe_id'];
         $all_id = User::getUsersId($id, $param);
         $subscribers = User::getUsersById($all_id);
 
-        return $this->render('all',[
+        return $this->render('all', [
             'users' => $subscribers,
             'title' => $title
         ]);
@@ -264,11 +265,11 @@ class UserController extends Controller
     {
         $title = 'Подписки пользователя ' . User::find()->select(['username'])->where(['id' => $id])->one()->username;
 
-        $param= ['select' => 'subscribe_id', 'where' => 'user_id'];
+        $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
         $all_id = User::getUsersId($id, $param);
         $subscriptions = User::getUsersById($all_id);
 
-        return $this->render('all',[
+        return $this->render('all', [
             'users' => $subscriptions,
             'title' => $title
         ]);
@@ -298,6 +299,28 @@ class UserController extends Controller
 
     public function actionSettings()
     {
-        
+        $model = new SettingsForm();
+
+        $user = User::findOne(['id' => Yii::$app->user->id]);
+
+        $model->username = $user->username;
+        $model->email = $user->email;
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                $result = "Настройки успешно сохранены";
+                $alert_type = 'success';
+            } else {
+                $result = "Неудача! Попробуйте снова";
+                $alert_type = 'error';
+            }
+            Yii::$app->session->setFlash($alert_type, $result);
+        }
+
+        return $this->render('settings', [
+            'model' => $model,
+            'user' => $user
+        ]);
     }
+
 }
