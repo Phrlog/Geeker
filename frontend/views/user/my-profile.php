@@ -23,6 +23,11 @@ LikesAsset::register($this);
             </div>
         <?php endif; ?>
         <div class="panel-body">
+            <?php if ($user->avatar): ?>
+                <div class=" avatar">
+                    <?= Html::img(Yii::$app->UrlManager->createUrl($user->thumbnail), ['class' => "img-responsive"]) ?>
+                </div>
+            <?php endif; ?>
             <p>Подписаны: <a href="<?= Url::to(['user/subscribers', 'id' =>  $user->id]) ?>"><b><?= $me ?></b></p></a>
             <p>Подписан: <a href="<?= Url::to(['user/subscriptions', 'id' =>  $user->id]) ?>"><b><?= $to ?></b></p></a>
             <a href="<?= Url::to(['site/logout']) ?>">
