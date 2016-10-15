@@ -26,6 +26,7 @@ use yii\bootstrap\Alert;
         <?= $form->field($model, 'username')->textInput(['maxlength' => 255], ['class' => 'input-modal']) ?>
             <?= $form->field($model, 'email') ?>
         <?= $form->field($model, 'avatar', ['template' => '<i class="fa fa-file-image-o" aria-hidden="true"></i>{input} {label}'])->fileInput(['class' => 'file']) ?>
+        <?= $form->field($model, 'filter')->dropDownList($items, ['prompt' => 'Выберите фильтр']) ?>
         <?php if ($user->avatar): ?>
             <?= Html::img(Yii::$app->UrlManager->createUrl($user->thumbnail), ['class' => "img-responsive"]) ?>
         <?php endif; ?>
