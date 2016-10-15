@@ -5,6 +5,8 @@ use Yii;
 use yii\base\Model;
 use yii\imagine;
 use yii\web\UploadedFile;
+use Imagine\Image\ImageInterface;
+use yii\imagine\Image;
 
 /**
  * Login form
@@ -27,6 +29,11 @@ class SettingsForm extends Model
     public $avatar;
 
     /**
+     * @var
+     */
+    public $filter;
+
+    /**
      * @inheritdoc
      */
     public function rules()
@@ -35,6 +42,7 @@ class SettingsForm extends Model
             // username and email are both required
             [['username', 'email'], 'required'],
             [['avatar'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['filter'], 'safe']
         ];
     }
 
@@ -63,10 +71,23 @@ class SettingsForm extends Model
             $file_name = $this->avatar->baseName . '.' . $this->avatar->extension;
 
             $this->avatar->saveAs($path . '/original/' . $file_name);
+            var_dump($this->filter);
+            $image = Image::getImagine()->open($path . '/original/' . $file_name);
 
-            imagine\Image::thumbnail( $path . '/original/' . $file_name, 240, 320)
-                ->save($path . '/thumbnail/' . $file_name, ['quality' => 50]);
-
+            switch ($this->filter) {
+                case 1:
+                    $image->effects()->negative();
+                    break;
+                case 2:
+                    $image->effects()->gamma(0.7);
+                    break;
+                case 3:
+                    $image->effects()->grayscale();
+                    break;
+            }
+            $image->save($path . '/original/' . $file_name);
+            $image = Image::thumbnail($path . '/original/' . $file_name, 120, 120, ImageInterface::THUMBNAIL_INSET);
+            $image->save($path . '/thumbnail/' . $file_name, ['quality' => 50]);
             return true;
         } else {
             return false;
@@ -87,8 +108,6 @@ class SettingsForm extends Model
 
             $user->avatar = $path . '/original/' . $this->avatar->baseName . '.' . $this->avatar->extension;
             $user->thumbnail = $path . '/thumbnail/' . $this->avatar->baseName . '.' . $this->avatar->extension;
-        } else {
-            echo 'wow';
         }
 
         $user->email = $this->email;
