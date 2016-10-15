@@ -317,9 +317,17 @@ class UserController extends Controller
             Yii::$app->session->setFlash($alert_type, $result);
         }
 
+        $items = [
+            '0' => 'Нет фильтра',
+            '1' => 'Негатив',
+            '2' => 'Скорректировать гамму',
+            '3' => 'Черно-белый'
+        ];
+
         return $this->render('settings', [
             'model' => $model,
-            'user' => $user
+            'user' => $user,
+            'items' => $items
         ]);
     }
 
