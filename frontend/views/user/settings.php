@@ -22,7 +22,7 @@ use yii\bootstrap\Alert;
         ]);?>
     <?php endif; ?>
     <div class="panel-body">
-        <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
+        <?php $form = ActiveForm::begin(); ?>
         <?= $form->field($model, 'username')->textInput(['maxlength' => 255], ['class' => 'input-modal']) ?>
             <?= $form->field($model, 'email') ?>
         <?= $form->field($model, 'avatar', ['template' => '<i class="fa fa-file-image-o" aria-hidden="true"></i>{input} {label}'])->fileInput(['class' => 'file']) ?>
@@ -31,7 +31,7 @@ use yii\bootstrap\Alert;
             <?= Html::img(Yii::$app->UrlManager->createUrl($user->thumbnail), ['class' => "img-responsive"]) ?>
         <?php endif; ?>
             <div class="form-group">
-                <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+                <?= Html::submitButton('Изменить', ['class' => 'btn btn-primary']) ?>
             </div>
         <?php ActiveForm::end(); ?>
     </div>

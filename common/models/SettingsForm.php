@@ -49,9 +49,10 @@ class SettingsForm extends Model
     public function rules()
     {
         return [
-            // username and email are both required
             [['username', 'email'], 'required'],
-            [['avatar'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['avatar'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg',
+                'whenClient' => "function (attribute, value) { return false; }"
+            ],
             [['filter'], 'safe']
         ];
     }
@@ -61,7 +62,8 @@ class SettingsForm extends Model
         return [
             'username' => 'Имя пользователя',
             'avatar' => 'Выберите аватар',
-            'email' => 'Email'
+            'email' => 'Email',
+            'filter' => 'Фильтр'
         ];
     }
 
