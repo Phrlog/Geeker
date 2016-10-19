@@ -139,6 +139,13 @@ class GeeksController extends Controller
     {
         $model = new GeekForm();
 
+        // Find your subscriptions
+        $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
+        $all_id = User::getUsersId(Yii::$app->user->id, $param);
+
+        // Find geeks of your subscriptions
+        $geeks = Geeks::find()->select(['id as value', 'text as label'])->where(['user_id' => $all_id])->asArray()->all();
+
         if ($model->load(Yii::$app->request->post())) {
 
             if ($model->save()) {
@@ -156,6 +163,7 @@ class GeeksController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'geeks' => $geeks
         ]);
     }
 

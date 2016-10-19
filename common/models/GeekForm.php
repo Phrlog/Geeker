@@ -106,6 +106,7 @@ class GeekForm extends Model
         return [
             'text' => 'Введите ваш твит:',
             'imageFile' => 'Выберите изображение:',
+            'parent_id' => 'Ответ на твит №'
         ];
     }
 }
