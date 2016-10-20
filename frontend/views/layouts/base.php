@@ -8,7 +8,7 @@ use yii\helpers\Url;
 
 MainAsset::register($this);
 
-$username = Yii::$app->user->id ? Yii::$app->user->identity->findIdentity(Yii::$app->user->id)->username : 'Гость';
+$username = Yii::$app->user->id ? Yii::$app->user->identity->username : 'Гость';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -69,8 +69,7 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->findIdentity(Yii::$
                         <li><a href="<?= Url::to(['user/search']); ?>">Поиск пользователя</a></li>
                     </ul>
                 </li>
-                <li><a href="page-about.html">О нас</a></li>
-                <li><a href="page-contact.html">Контакты</a></li>
+                <li><a href="<?= Url::to(['site/about']); ?>">О сайте</a></li>
                 </ul>
         </div>
     </div>
