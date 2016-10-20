@@ -11,7 +11,7 @@ use common\models\Likes;
 
 ?>
 <?php foreach ($geeks as $geek): ?>
-    <div class="col-sm-8 blog-main">
+    <div class="col-sm-12 blog-main">
         <div class="row">
             <div class="col-sm-6">
                 <section class="blog-post">
