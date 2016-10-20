@@ -30,12 +30,12 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'signup'],
+                        'actions' => ['login', 'error', 'signup', 'about'],
                         'allow' => true,
                     ],
 
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'about'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

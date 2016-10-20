@@ -4,13 +4,18 @@
 
 use yii\helpers\Html;
 
-$this->title = 'About';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'О сайте';
 ?>
-<div class="site-about">
-    <h1><?= Html::encode($this->title) ?></h1>
+<section class="blog-post">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="blog-post-content">
+                <h2 class="blog-post-title"><?= Html::encode($this->title) ?></h2>
 
-    <p>This is the About page. You may modify the following file to customize its content:</p>
-
-    <code><?= __FILE__ ?></code>
-</div>
+                <p>Клон твиттера на Yii2</p>
+                <p>Этот и другие проекты: </p><a href="https://github.com/Phrlog/Geeker"><code>https://github.com/Phrlog/Geeker</code></a>
+                <p><a href="mailto:phrlog@gmail.com">phrlog@gmail.com</a></p>
+            </div>
+        </div>
+    </div>
+</section>
