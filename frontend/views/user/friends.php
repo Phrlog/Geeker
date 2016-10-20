@@ -2,11 +2,10 @@
 /* @var $this yii\web\View */
 /* @var array $users common\models\User */
 
-use yii\helpers\Html;
-use yii\helpers\Url;
 use Yii;
-use common\models\Subscription;
+use frontend\assets\SubscribeAsset;
 
+SubscribeAsset::register($this);
 ?>
 
 <div class="row">

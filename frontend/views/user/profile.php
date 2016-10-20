@@ -5,14 +5,15 @@
 /* @var $me   integer */
 /* @var $to   integer */
 
+use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use common\models\Subscription;
-use Yii;
 use frontend\assets\LikesAsset;
+use frontend\assets\SubscribeAsset;
 
 LikesAsset::register($this);
-
+SubscribeAsset::register($this);
 ?>
 <div class="col-sm-4">
     <div class="panel panel-default floating">
@@ -32,15 +33,17 @@ LikesAsset::register($this);
             <?php endif; ?>
             <p>Подписаны: <a href="<?= Url::to(['user/subscribers', 'id' =>  $user->id]) ?>"><b><?= $me ?></b></p></a>
             <p>Подписан: <a href="<?= Url::to(['user/subscriptions', 'id' =>  $user->id]) ?>"><b><?= $to ?></b></p></a>
-            <?php if (Subscription::isRelationExist(Yii::$app->user->id, $user->id)): ?>
-                <a href="<?= Url::to(['user/unsubscribe', 'id' => $user->id]); ?>">
-                    <button type="button" class="btn btn-success btn-lg subscribe_button">Подписаны</button>
-                </a>
-            <?php else: ?>
-                <a href="<?= Url::to(['user/subscribe', 'id' => $user->id]); ?>">
-                    <button type="button" class="btn btn-info btn-lg">Подписаться</button>
-                </a>
-            <?php endif; ?>
+            <div class="subscribe-panel" data-url="<?= Url::to(['user/subscribe'], true) ?>" data-id="<?= $user->id ?>">
+                <?php if (Subscription::isRelationExist(Yii::$app->user->id, $user->id) && (Yii::$app->user->id != $user->id)): ?>
+                    <button type="button" class="btn btn-success btn-lg unsubscribe_button subscribe">
+                        Подписаны
+                    </button>
+                <?php elseif (Yii::$app->user->id != $user->id): ?>
+                    <button type="button" class="btn btn-info btn-lg subscribe">
+                        Подписаться
+                    </button>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
