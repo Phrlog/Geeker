@@ -84,12 +84,14 @@ class UserController extends Controller
     public function actionAll()
     {
         $title = 'Все пользователи';
-
+        
         $users = User::getUsersById(true);
+        $subscriptions_id = User::getSubscribersId(Yii::$app->user->id);
 
         return $this->render('all', [
             'users' => $users,
-            'title' => $title
+            'title' => $title,
+            'subscriptions_id' => $subscriptions_id
         ]);
     }
 
@@ -100,19 +102,20 @@ class UserController extends Controller
      */
     public function actionFriends()
     {
-        // Get $subscriptions of current user
-        $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
-        $id = User::getUsersId(Yii::$app->user->id, $param);
-        $subscriptions = User::getUsersById($id);
-
         // Get $subscribers of current user
         $param = ['select' => 'user_id', 'where' => 'subscribe_id'];
         $id = User::getUsersId(Yii::$app->user->id, $param);
         $subscribers = User::getUsersById($id);
 
+        // Get $subscriptions of current user
+        $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
+        $id = User::getUsersId(Yii::$app->user->id, $param);
+        $subscriptions = User::getUsersById($id);
+
         return $this->render('friends', [
             'subscriptions' => $subscriptions,
-            'subscribers' => $subscribers
+            'subscribers' => $subscribers,
+            'subscriptions_id' => $id
         ]);
 
     }
@@ -229,9 +232,12 @@ class UserController extends Controller
         $all_id = User::getUsersId($id, $param);
         $subscribers = User::getUsersById($all_id);
 
+        $subscriptions_id = User::getSubscribersId(Yii::$app->user->id);
+
         return $this->render('all', [
             'users' => $subscribers,
-            'title' => $title
+            'title' => $title,
+            'subscriptions_id' => $subscriptions_id
         ]);
     }
 
@@ -249,9 +255,12 @@ class UserController extends Controller
         $all_id = User::getUsersId($id, $param);
         $subscriptions = User::getUsersById($all_id);
 
+        $subscriptions_id = User::getSubscribersId(Yii::$app->user->id);
+
         return $this->render('all', [
             'users' => $subscriptions,
-            'title' => $title
+            'title' => $title,
+            'subscriptions_id' => $subscriptions_id
         ]);
     }
 

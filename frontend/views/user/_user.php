@@ -1,7 +1,6 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
-use common\models\Subscription;
 ?>
 
 <section class="blog-post">
@@ -18,11 +17,11 @@ use common\models\Subscription;
                 <p>Подписаны: <a href="<?= Url::to(['user/subscribers', 'id' =>  $user->id]) ?>"><b><?= $user->subscribers ?></b></p></a>
                 <p>Подписан: <a href="<?= Url::to(['user/subscriptions', 'id' =>  $user->id]) ?>"><b><?= $user->subscriptions ?></b></p></a>
                 <div class="subscribe-panel" data-url="<?= Url::to(['user/subscribe'], true) ?>" data-id="<?= $user->id ?>">
-                    <?php if (Subscription::isRelationExist(Yii::$app->user->id, $user->id) && (Yii::$app->user->id != $user->id)): ?>
+                    <?php if (in_array($user->id, $subscriptions_id)): ?>
                         <button type="button" class="btn btn-success btn-lg unsubscribe_button subscribe">
                             Подписаны
                         </button>
-                    <?php elseif (Yii::$app->user->id != $user->id): ?>
+                    <?php elseif ( Yii::$app->user->id != $user->id): ?>
                         <button type="button" class="btn btn-info btn-lg subscribe">
                             Подписаться
                         </button>
