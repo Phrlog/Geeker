@@ -6,12 +6,12 @@ $(function(){
     });
 });
 
-$('.subscribe_button').mouseover(function(){
-    $(this).attr('class', 'btn btn-danger btn-lg');
+$('.subscribe-panel').on('mouseover', '.unsubscribe_button', function(){
+    $(this).attr('class', 'btn btn-danger btn-lg unsubscribe_button subscribe');
     $(this).text('Отписаться');
 });
 
-$('.subscribe_button').mouseleave(function(){
-    $(this).attr('class', 'btn btn-success btn-lg');
+$('.subscribe-panel').on('mouseleave', '.unsubscribe_button', function(){
+    $(this).attr('class', 'btn btn-success btn-lg unsubscribe_button subscribe');
     $(this).text('Подписаны');
 });
