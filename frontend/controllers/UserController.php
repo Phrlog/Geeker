@@ -12,6 +12,8 @@ use yii\filters\VerbFilter;
 use common\models\Subscription;
 use common\models\Likes;
 use common\models\SettingsForm;
+use yii\web\Response;
+
 
 /**
  * User controller
@@ -48,6 +50,20 @@ class UserController extends Controller
                 ],
             ],
         ];
+    }
+
+    /**
+     * @param \yii\base\Action $action
+     * @return bool
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function beforeAction($action)
+    {
+        if ($action->id == 'subscribe') {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**
@@ -173,66 +189,30 @@ class UserController extends Controller
 
 
     /**
-     * Subscribe to user by id
+     * Subscribe/unsubscribe to user by id
      *
-     * TODO ajax subscribe
-     *
-     * @param $id
      * @return \yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionSubscribe($id)
+    public function actionSubscribe()
     {
-        $user = User::findOne(['id' => Yii::$app->user->id]);
-        if ($user === null) {
-            throw new NotFoundHttpException;
+        if (Yii::$app->request->isAjax) {
+            $sub_id = Yii::$app->request->post('id');
+            $sub = new Subscription();
+
+            if (!Subscription::isRelationExist(Yii::$app->user->id, $sub_id)) {
+                $sub->user_id = Yii::$app->user->id;
+                $sub->subscribe_id = $sub_id;
+                $sub->save();
+                $option = 'add';
+            } else {
+                $sub->findOne(['user_id' => Yii::$app->user->id, 'subscribe_id' => $sub_id])->delete();
+                $option = 'delete';
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            return ['status' => 'success', 'option' => $option];
         }
-
-        $subscribe = User::findOne(['id' => $id]);
-        if ($subscribe === null) {
-            throw new NotFoundHttpException;
-        }
-
-        $sub = new Subscription();
-
-        if (!Subscription::isRelationExist($user->id, $subscribe->id)) {
-            $sub->user_id = $user->id;
-            $sub->subscribe_id = $subscribe->id;
-            $sub->save();
-        }
-
-        return $this->redirect(Yii::$app->request->referrer);
-    }
-
-    /**
-     * Unsubscribe to user by id
-     *
-     * TODO ajax subscribe
-     *
-     * @param $id
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException
-     * @throws \Exception
-     */
-    public function actionUnsubscribe($id)
-    {
-        $user = User::findOne(['id' => Yii::$app->user->id]);
-        if ($user === null) {
-            throw new NotFoundHttpException;
-        }
-
-        $subscribe = User::findOne(['id' => $id]);
-        if ($subscribe === null) {
-            throw new NotFoundHttpException;
-        }
-
-        $sub = new Subscription();
-
-        if ($sub::isRelationExist($user->id, $subscribe->id)) {
-            $sub->findOne(['user_id' => Yii::$app->user->id, 'subscribe_id' => $id])->delete();
-        }
-
-        return $this->redirect(Yii::$app->request->referrer);
     }
 
     /**
