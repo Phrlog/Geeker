@@ -291,4 +291,16 @@ class User extends ActiveRecord implements IdentityInterface
         return $users->where(['user.id' => $id])->groupBy(['user.id'])->all();
     }
 
+    /**
+     * Get subscriptions id of user by his id
+     *
+     * @param $user_id
+     * @return array
+     */
+    public static function getSubscribersId($user_id) {
+
+        $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
+        return $user_id ? User::getUsersId(Yii::$app->user->id, $param) : [];
+    }
+
 }
