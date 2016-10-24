@@ -5,7 +5,6 @@ use common\models\Geeks;
 use common\models\SearchForm;
 use Yii;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use common\models\User;
 use yii\filters\VerbFilter;
@@ -133,10 +132,7 @@ class UserController extends Controller
             return $this->redirect(['user/my-profile']);
         }
 
-        $user = User::findOne(['id' => $id]);
-        if ($user === null) {
-            throw new NotFoundHttpException;
-        }
+        $user = User::findModelById($id);
 
         // Find subscriptions and subscribers
         $sub_me = Subscription::find()->where(['subscribe_id' => $id])->count();
@@ -161,15 +157,10 @@ class UserController extends Controller
      * Display your profile
      *
      * @return string
-     * @throws NotFoundHttpException
      */
     public function actionMyProfile()
     {
-        $user = User::findOne(['id' => Yii::$app->user->id]);
-
-        if ($user === null) {
-            throw new NotFoundHttpException;
-        }
+        $user = User::findModelById(Yii::$app->user->id);
 
         // Find subscriptions and subscribers
         $sub_me = Subscription::find()->where(['subscribe_id' => Yii::$app->user->id])->count();
@@ -190,28 +181,15 @@ class UserController extends Controller
         ]);
     }
 
-
     /**
      * Subscribe/unsubscribe to user by id
      *
      * @return \yii\web\Response
-     * @throws NotFoundHttpException
      */
     public function actionSubscribe()
     {
         if (Yii::$app->request->isAjax) {
-            $sub_id = Yii::$app->request->post('id');
-            $sub = new Subscription();
-
-            if (!Subscription::isRelationExist(Yii::$app->user->id, $sub_id)) {
-                $sub->user_id = Yii::$app->user->id;
-                $sub->subscribe_id = $sub_id;
-                $sub->save();
-                $option = 'add';
-            } else {
-                $sub->findOne(['user_id' => Yii::$app->user->id, 'subscribe_id' => $sub_id])->delete();
-                $option = 'delete';
-            }
+            $option = Subscription::doSubscription(Yii::$app->user->id, Yii::$app->request->post('id'));
             Yii::$app->response->format = Response::FORMAT_JSON;
 
             return ['status' => 'success', 'option' => $option];
@@ -226,7 +204,7 @@ class UserController extends Controller
      */
     public function actionSubscribers($id)
     {
-        $title = 'Подписчики пользователя ' . User::find()->select(['username'])->where(['id' => $id])->one()->username;
+        $title = 'Подписчики пользователя ' . User::findIdentity($id)->username;
 
         $param = ['select' => 'user_id', 'where' => 'subscribe_id'];
         $all_id = User::getUsersId($id, $param);
@@ -249,7 +227,7 @@ class UserController extends Controller
      */
     public function actionSubscriptions($id)
     {
-        $title = 'Подписки пользователя ' . User::find()->select(['username'])->where(['id' => $id])->one()->username;
+        $title = 'Подписки пользователя ' . User::findIdentity($id)->username;
 
         $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
         $all_id = User::getUsersId($id, $param);
@@ -264,21 +242,23 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * @return string
+     * @throws \yii\web\NotFoundHttpException
+     */
     public function actionSearch()
     {
+        $model = new SearchForm();
         if (Yii::$app->request->isPost) {
-            $user = User::find()->where(['username' => Yii::$app->request->post('SearchForm')['username']])->one();
-            if ($user === null) {
-                throw new NotFoundHttpException;
-            } else {
-                $this->redirect(['user/profile', 'id' => $user->id]);
-            }
-        }
+            $user = User::findModelByName(Yii::$app->request->post('SearchForm')['username']);
+            $this->redirect(['user/profile', 'id' => $user->id]);
+        };
+
+        // Find users for live search
         $users = User::find()
             ->select(['username as value', 'username as label'])
             ->asArray()
             ->all();
-        $model = new SearchForm();
 
         return $this->render('search', [
             'users' => $users,
@@ -286,12 +266,15 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * @return string
+     * @throws \yii\web\NotFoundHttpException
+     */
     public function actionSettings()
     {
         $model = new SettingsForm();
 
-        $user = User::findOne(['id' => Yii::$app->user->id]);
-
+        $user = User::findModelById(Yii::$app->user->id);
         $model->username = $user->username;
         $model->email = $user->email;
 
