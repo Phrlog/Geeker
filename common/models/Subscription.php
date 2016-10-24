@@ -63,11 +63,22 @@ class Subscription extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    /**
+     * @param $id
+     * @param $sub_id
+     * @return int|string
+     */
     public static function isRelationExist($id, $sub_id)
     {
         return Subscription::find()->where(['user_id' => $id, 'subscribe_id' => $sub_id])->count();
     }
 
+    /**
+     * @param $user_1
+     * @param $user_2
+     * @return string
+     * @throws \Exception
+     */
     public static function doSubscription($user_1, $user_2) {
         $sub = new self();
         if (!Subscription::isRelationExist($user_1, $user_2)) {
@@ -82,4 +93,21 @@ class Subscription extends \yii\db\ActiveRecord
 
         return $option;
     }
+
+    /**
+     * @param $id
+     * @return int|string
+     */
+    public static function countUserSubscriptions($id) {
+        return Subscription::find()->where(['subscribe_id' => $id])->count();
+    }
+
+    /**
+     * @param $id
+     * @return int|string
+     */
+    public static function countUserSubscribers($id) {
+        return Subscription::find()->where(['user_id' => $id])->count();
+    }
+
 }
