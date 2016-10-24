@@ -8,6 +8,7 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
 use yii\db\Query;
+use yii\web\NotFoundHttpException;
 
 /**
  * User model
@@ -298,9 +299,36 @@ class User extends ActiveRecord implements IdentityInterface
      * @return array
      */
     public static function getSubscribersId($user_id) {
-
         $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
         return $user_id ? User::getUsersId(Yii::$app->user->id, $param) : [];
+    }
+
+    /**
+     * @param $user_id
+     * @return null|static
+     * @throws NotFoundHttpException
+     */
+    public static function findModelById($user_id) {
+        $user = User::findOne(['id' => $user_id]);
+        if ($user === null) {
+            throw new NotFoundHttpException;
+        } else {
+            return $user;
+        }
+    }
+
+    /**
+     * @param $username
+     * @return null|static
+     * @throws NotFoundHttpException
+     */
+    public static function findModelByName($username) {
+        $user = User::findOne(['username' => $username]);
+        if ($user === null) {
+            throw new NotFoundHttpException;
+        } else {
+            return $user;
+        }
     }
 
 }
