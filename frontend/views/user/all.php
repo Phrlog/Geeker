@@ -1,11 +1,9 @@
 <?php
 /* @var $this yii\web\View */
 /* @var array $users common\models\User */
+/* @var array  $subscriptions_id */
 
 use yii\helpers\Html;
-use yii\helpers\Url;
-use Yii;
-use common\models\Subscription;
 use frontend\assets\SubscribeAsset;
 
 SubscribeAsset::register($this);
@@ -18,7 +16,7 @@ $this->title = Html::encode($title);
         <div class="col-sm-12">
             <h2><?= $this->title ?></h2>
             <?php foreach ($users as $user): ?>
-                <?php include '_user.php' ?>
+                <?= $this->render('/common/_user', ['subscriptions_id' => $subscriptions_id, 'user' => $user]) ?>
             <?php endforeach; ?>
         </div>
     </div>

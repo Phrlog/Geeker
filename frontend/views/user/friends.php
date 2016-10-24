@@ -1,8 +1,9 @@
 <?php
 /* @var $this yii\web\View */
-/* @var array $users common\models\User */
+/* @var array $subscriptions common\models\User */
+/* @var array $subscribers common\models\User */
+/* @var array  $subscriptions_id */
 
-use Yii;
 use frontend\assets\SubscribeAsset;
 
 SubscribeAsset::register($this);
@@ -14,13 +15,13 @@ SubscribeAsset::register($this);
             <div class="col-sm-6">
                 <h1>Мои подписки</h1>
                 <?php foreach ($subscriptions as $user): ?>
-                    <?php include '_user.php' ?>
+                    <?= $this->render('/common/_user', ['subscriptions_id' => $subscriptions_id, 'user' => $user]) ?>
                 <?php endforeach; ?>
             </div>
             <div class="col-sm-6">
                 <h1>Мои подписчики</h1>
                 <?php foreach ($subscribers as $user): ?>
-                    <?php include '_user.php' ?>
+                    <?= $this->render('/common/_user', ['subscriptions_id' => $subscriptions_id, 'user' => $user]) ?>
                 <?php endforeach; ?>
             </div>
         </div>

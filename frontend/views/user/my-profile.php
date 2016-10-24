@@ -2,12 +2,12 @@
 /* @var $this yii\web\View */
 /* @var array $geeks common\models\Geeks */
 /* @var $user common\models\User */
+/* @var array  $likes */
 /* @var $me   integer */
 /* @var $to   integer */
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use Yii;
 use frontend\assets\LikesAsset;
 
 LikesAsset::register($this);
@@ -40,7 +40,7 @@ LikesAsset::register($this);
     <div class="row">
         <div class="col-sm-12">
             <?php foreach ($geeks as $geek): ?>
-                <?php include '_geek.php'?>
+                <?= $this->render('/common/_geek', ['likes' => $likes, 'geek' => $geek, 'username' => $user->username]) ?>
             <?php endforeach; ?>
         </div>
     </div>
