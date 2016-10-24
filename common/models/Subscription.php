@@ -67,4 +67,19 @@ class Subscription extends \yii\db\ActiveRecord
     {
         return Subscription::find()->where(['user_id' => $id, 'subscribe_id' => $sub_id])->count();
     }
+
+    public static function doSubscription($user_1, $user_2) {
+        $sub = new self();
+        if (!Subscription::isRelationExist($user_1, $user_2)) {
+            $sub->user_id = $user_1;
+            $sub->subscribe_id = $user_2;
+            $sub->save();
+            $option = 'add';
+        } else {
+            $sub->findOne(['user_id' => $user_1, 'subscribe_id' => $user_2])->delete();
+            $option = 'delete';
+        }
+
+        return $option;
+    }
 }
