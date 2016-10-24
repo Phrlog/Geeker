@@ -1,6 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $model common\models\GeekForm */
+/* @var array $geeks common\models\Geeks */
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
