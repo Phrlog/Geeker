@@ -20,7 +20,7 @@ use yii\helpers\Url;
                     </a>
                 <?php endif; ?>
                 <a href="<?= Url::to(['user/profile', 'id' => $geek->user_id]) ?>">
-                    <span class="label label-light label-primary"><?= Html::encode($user->username) ?></span></a>
+                    <span class="label label-light label-primary"><?= Html::encode($username) ?></span></a>
                 <p class="blog-post-date pull-right"><?= $geek->updated_at ?></p>
             </div>
             <div class="blog-post-content">
