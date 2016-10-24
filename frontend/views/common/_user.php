@@ -1,4 +1,7 @@
 <?php
+/* @var $user common\models\User */
+/* @var array  $subscriptions_id */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 ?>

@@ -1,4 +1,8 @@
 <?php
+/* @var $geek common\models\Geeks */
+/* @var $user common\models\User */
+/* @var array  $likes */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 
