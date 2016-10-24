@@ -135,8 +135,8 @@ class UserController extends Controller
         $user = User::findModelById($id);
 
         // Find subscriptions and subscribers
-        $sub_me = Subscription::find()->where(['subscribe_id' => $id])->count();
-        $sub_to = Subscription::find()->where(['user_id' => $id])->count();
+        $sub_me = Subscription::countUserSubscriptions($id);
+        $sub_to = Subscription::countUserSubscribers($id);
 
         // Find geeks that we liked
         $likes = Likes::getUserLikes(Yii::$app->user->id);
@@ -163,8 +163,9 @@ class UserController extends Controller
         $user = User::findModelById(Yii::$app->user->id);
 
         // Find subscriptions and subscribers
-        $sub_me = Subscription::find()->where(['subscribe_id' => Yii::$app->user->id])->count();
-        $sub_to = Subscription::find()->where(['user_id' => Yii::$app->user->id])->count();
+        // Find subscriptions and subscribers
+        $sub_me = Subscription::countUserSubscriptions(Yii::$app->user->id);
+        $sub_to = Subscription::countUserSubscribers(Yii::$app->user->id);
 
         // Find geeks that we liked
         $geeks = Geeks::getUserGeeks(Yii::$app->user->id);
@@ -194,6 +195,8 @@ class UserController extends Controller
 
             return ['status' => 'success', 'option' => $option];
         }
+
+        return null;
     }
 
     /**
