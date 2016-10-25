@@ -38,14 +38,14 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->username : 'Гос�
                         <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if ($username == 'Гость'): ?>
-                            <li><a href="<?= Url::to(['site/login']); ?>">Войти</a></li>
-                            <li><a href="<?= Url::to(['site/signup']); ?>">Регистрация</a></li>
+                            <li><a href="<?= Url::to(['user/login']); ?>">Войти</a></li>
+                            <li><a href="<?= Url::to(['user/signup']); ?>">Регистрация</a></li>
                         <?php endif; ?>
 
                         <?php if ($username != 'Гость'): ?>
                             <li><a href="<?= Url::to(['user/my-profile']); ?>">Мой профиль</a></li>
                             <li><a href="<?= Url::to(['user/settings']); ?>">Настройки</a></li>
-                            <li><a href="<?= Url::to(['site/logout']); ?>">Выйти</a></li>
+                            <li><a href="<?= Url::to(['user/logout']); ?>">Выйти</a></li>
                         <?php endif; ?>
                     </ul>
                 </li>
@@ -69,7 +69,7 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->username : 'Гос�
                         <li><a href="<?= Url::to(['user/search']); ?>">Поиск пользователя</a></li>
                     </ul>
                 </li>
-                <li><a href="<?= Url::to(['site/about']); ?>">О сайте</a></li>
+                <li><a href="<?= Url::to(['static/about']); ?>">О сайте</a></li>
                 </ul>
         </div>
     </div>

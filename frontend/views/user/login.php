@@ -22,7 +22,7 @@ use yii\helpers\Url;
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
                 <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 <div class="btn-group">
-                    <a href="<?= Url::to('site/signup'); ?>"<button type="button" class="btn btn-primary"></button>Регистрация</a>
+                    <a href="<?= Url::to('user/signup'); ?>"<button type="button" class="btn btn-primary"></button>Регистрация</a>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>

@@ -30,7 +30,7 @@ LikesAsset::register($this);
             <?php endif; ?>
             <p>Подписаны: <a href="<?= Url::to(['user/subscribers', 'id' =>  $user->id]) ?>"><b><?= $me ?></b></p></a>
             <p>Подписан: <a href="<?= Url::to(['user/subscriptions', 'id' =>  $user->id]) ?>"><b><?= $to ?></b></p></a>
-            <a href="<?= Url::to(['site/logout']) ?>">
+            <a href="<?= Url::to(['user/logout']) ?>">
                 <button type="button" class="btn btn-warning btn-raised">Выйти</button
             </a>
         </div>
