@@ -2,21 +2,14 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 
 /**
- * Site controller
+ * Static controller
  */
-class SiteController extends Controller
+class StaticController extends Controller
 {
 
     public $layout = 'base';
@@ -30,12 +23,12 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'signup', 'about'],
+                        'actions' => ['about'],
                         'allow' => true,
                     ],
 
                     [
-                        'actions' => ['logout', 'index', 'about'],
+                        'actions' => ['about'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -75,5 +68,5 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
-    
+
 }
