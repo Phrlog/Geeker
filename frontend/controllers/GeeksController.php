@@ -2,7 +2,6 @@
 namespace frontend\controllers;
 
 use Yii;
-use yii\db\Query;
 use yii\web\Controller;
 use common\models\Geeks;
 use yii\web\NotFoundHttpException;
@@ -12,7 +11,6 @@ use common\models\GeekForm;
 use common\models\User;
 use common\models\Likes;
 use yii\web\Response;
-use common\models\Subscription;
 
 /**
  * Geeks controller
@@ -84,14 +82,7 @@ class GeeksController extends Controller
      */
     public function actionAll()
     {
-        $geeks = Geeks::find()
-            ->select(['geeks.*', 'user.username', 'COUNT(likes.geek_id) as count'])
-            ->join('INNER JOIN', User::tableName(), 'user.id = geeks.user_id')
-            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
-            ->groupBy(['geeks.id'])
-            ->orderBy(['geeks.created_at' => SORT_DESC])
-            ->all();
-
+        $geeks = Geeks::getGeeks(SORT_DESC);
         $likes = Likes::getUserLikes(Yii::$app->user->id);
 
         return $this->render('all', [
@@ -109,24 +100,14 @@ class GeeksController extends Controller
      */
     public function actionView($id)
     {
-        $geek = Geeks::find()
-            ->select(['geeks.*', 'COUNT(likes.geek_id) as count'])
-            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
-            ->where(['id' => $id])
-            ->groupBy(['geeks.id'])
-            ->one();
-
-        if ($geek === null) {
-            throw new NotFoundHttpException;
-        }
-
-        $answers = Geeks::find()
-            ->where(['parent_id' => $id])
-            ->all();
+        $geek = Geeks::getGeekById($id);
+        $answers = Geeks::getGeeks(SORT_DESC, ['parent_id' => $id]);
+        $likes = Likes::getUserLikes(Yii::$app->user->id);
 
         return $this->render('view', [
             'geek' => $geek,
-            'answers' => $answers
+            'answers' => $answers,
+            'likes' => $likes
         ]);
     }
 
@@ -143,7 +124,7 @@ class GeeksController extends Controller
         $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
         $all_id = User::getUsersId(Yii::$app->user->id, $param);
 
-        // Find geeks of your subscriptions
+        // Find geeks of your subscriptions for live search
         $geeks = Geeks::find()->select(['id as value', 'text as label'])->where(['user_id' => $all_id])->asArray()->all();
 
         if ($model->load(Yii::$app->request->post())) {
@@ -175,15 +156,7 @@ class GeeksController extends Controller
     public function actionFeed()
     {
         // Find geeks of users on which we subscribed
-        $geeks = Geeks::find()->select(['geeks.*', 'user.username', 'COUNT(likes.geek_id) as count'])
-            ->join('INNER JOIN', User::tableName(), 'user.id = geeks.user_id')
-            ->join('INNER JOIN', Subscription::tableName(), 'subscription.subscribe_id = user.id')
-            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
-            ->where(['subscription.user_id' => Yii::$app->user->id])
-            ->orWhere(['geeks.user_id' => Yii::$app->user->id])
-            ->groupBy(['geeks.id'])
-            ->orderBy(['geeks.created_at' => SORT_DESC])
-            ->all();
+        $geeks = Geeks::getUserFeed(Yii::$app->user->id, SORT_DESC);
 
         // Find geeks that we liked
         $likes = Likes::getUserLikes(Yii::$app->user->id);
@@ -203,32 +176,14 @@ class GeeksController extends Controller
      */
     public function actionLike()
     {
-
         if (Yii::$app->request->isAjax) {
-            $like = new Likes();
             $geek_id = Yii::$app->request->post('id');
-
-            if (Geeks::findOne($geek_id) === null) {
-                throw new NotFoundHttpException;
-            }
-
-            if (Likes::isRelationExist(Yii::$app->user->id, $geek_id)) {
-                Likes::find()->where(['user_id' => Yii::$app->user->id, 'geek_id' => $geek_id])->one()->delete();
-                $option = 'delete';
-            } else {
-                $like->user_id = Yii::$app->user->id;
-                $like->geek_id = $geek_id;
-                $like->save();
-                $option = 'add';
-            }
-
+            $option = Likes::doLike(Yii::$app->user->id, $geek_id);
             Yii::$app->response->format = Response::FORMAT_JSON;
-
             $count = Likes::find()->where(['geek_id' => $geek_id])->count();
 
             return ['status' => 'success', 'option' => $option, 'count' => $count];
         }
-
     }
 
     /**
@@ -241,9 +196,7 @@ class GeeksController extends Controller
         $model = new GeekForm();
 
         if ($model->load(Yii::$app->request->post())) {
-
             Yii::$app->response->format = Response::FORMAT_JSON;
-
             if ($model->save()) {
                 $status = 'Успех';
             } else {
@@ -253,12 +206,14 @@ class GeeksController extends Controller
             return ['status' => $status];
 
         } else if (Yii::$app->request->isAjax) {
-
             $model->parent_id = Yii::$app->request->post('id');
+
             return $this->renderAjax('answer', [
                 'model' => $model,
             ]);
         }
+
+        return null;
     }
 
 }

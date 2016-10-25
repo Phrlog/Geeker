@@ -3,9 +3,9 @@
 namespace common\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use yii\db\ActiveRecord;
+use yii\web\NotFoundHttpException;
 
 /**
  * This is the model class for table "{{%geeks}}".
@@ -118,6 +118,66 @@ class Geeks extends \yii\db\ActiveRecord
             ->all();
 
         return $geeks;
+    }
+
+    /**
+     * @param int $order
+     * @param null $where
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getGeeks($order = SORT_DESC, $where = null) {
+        $geeks = Geeks::find()
+            ->select(['geeks.*', 'user.username', 'COUNT(likes.geek_id) as count'])
+            ->join('INNER JOIN', User::tableName(), 'user.id = geeks.user_id')
+            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
+            ->groupBy(['geeks.id']);
+
+        if ($where !== null) {
+            $geeks = $geeks->where($where);
+        }
+        $geeks = $geeks->orderBy(['geeks.created_at' => $order])->all();
+
+        return $geeks !== null ? $geeks: [];
+    }
+
+    /**
+     * @param int $id
+     * @return array|null|ActiveRecord
+     * @throws NotFoundHttpException
+     */
+    public static function getGeekById($id) {
+        $geek = Geeks::find()
+            ->select(['geeks.*', 'COUNT(likes.geek_id) as count'])
+            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
+            ->where(['id' => $id])
+            ->groupBy(['geeks.id'])
+            ->one();
+
+        if ($geek === null) {
+            throw new NotFoundHttpException;
+        }
+
+        return $geek;
+    }
+
+    /**
+     * @param $user_id
+     * @param int $sort
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function getUserFeed($user_id, $sort = SORT_DESC) {
+        $geeks = Geeks::find()->select(['geeks.*', 'user.username', 'COUNT(likes.geek_id) as count'])
+            ->join('INNER JOIN', User::tableName(), 'user.id = geeks.user_id')
+            ->join('INNER JOIN', Subscription::tableName(), 'subscription.subscribe_id = user.id')
+            ->join('LEFT JOIN', Likes::tableName(), 'likes.geek_id = geeks.id')
+            ->where(['subscription.user_id' => $user_id])
+            ->orWhere(['geeks.user_id' => $user_id])
+            ->groupBy(['geeks.id'])
+            ->orderBy(['geeks.created_at' => $sort])
+            ->all();
+
+        return $geeks !== null ? $geeks: [];
+
     }
 
 }
