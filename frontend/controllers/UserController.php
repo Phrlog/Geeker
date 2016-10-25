@@ -1,9 +1,10 @@
 <?php
 namespace frontend\controllers;
 
+use Yii;
 use common\models\Geeks;
 use common\models\SearchForm;
-use Yii;
+use frontend\models\FrontendUser;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use common\models\User;
@@ -139,8 +140,8 @@ class UserController extends Controller
     {
         $title = 'Все пользователи';
         
-        $users = User::getUsersById(true);
-        $subscriptions_id = User::getSubscribersId(Yii::$app->user->id);
+        $users = FrontendUser::getUsersById(true);
+        $subscriptions_id = FrontendUser::getSubscribersId(Yii::$app->user->id);
 
         return $this->render('all', [
             'users' => $users,
@@ -158,13 +159,13 @@ class UserController extends Controller
     {
         // Get $subscribers of current user
         $param = ['select' => 'user_id', 'where' => 'subscribe_id'];
-        $id = User::getUsersId(Yii::$app->user->id, $param);
-        $subscribers = User::getUsersById($id);
+        $id = FrontendUser::getUsersId(Yii::$app->user->id, $param);
+        $subscribers = FrontendUser::getUsersById($id);
 
         // Get $subscriptions of current user
         $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
-        $id = User::getUsersId(Yii::$app->user->id, $param);
-        $subscriptions = User::getUsersById($id);
+        $id = FrontendUser::getUsersId(Yii::$app->user->id, $param);
+        $subscriptions = FrontendUser::getUsersById($id);
 
         return $this->render('friends', [
             'subscriptions' => $subscriptions,
@@ -179,7 +180,6 @@ class UserController extends Controller
      *
      * @param $id
      * @return string|\yii\web\Response
-     * @throws NotFoundHttpException
      */
     public function actionProfile($id)
     {
@@ -265,10 +265,10 @@ class UserController extends Controller
         $title = 'Подписчики пользователя ' . User::findIdentity($id)->username;
 
         $param = ['select' => 'user_id', 'where' => 'subscribe_id'];
-        $all_id = User::getUsersId($id, $param);
-        $subscribers = User::getUsersById($all_id);
+        $all_id = FrontendUser::getUsersId($id, $param);
+        $subscribers = FrontendUser::getUsersById($all_id);
 
-        $subscriptions_id = User::getSubscribersId(Yii::$app->user->id);
+        $subscriptions_id = FrontendUser::getSubscribersId(Yii::$app->user->id);
 
         return $this->render('all', [
             'users' => $subscribers,
@@ -288,10 +288,10 @@ class UserController extends Controller
         $title = 'Подписки пользователя ' . User::findIdentity($id)->username;
 
         $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
-        $all_id = User::getUsersId($id, $param);
-        $subscriptions = User::getUsersById($all_id);
+        $all_id = FrontendUser::getUsersId($id, $param);
+        $subscriptions = FrontendUser::getUsersById($all_id);
 
-        $subscriptions_id = User::getSubscribersId(Yii::$app->user->id);
+        $subscriptions_id = FrontendUser::getSubscribersId(Yii::$app->user->id);
 
         return $this->render('all', [
             'users' => $subscriptions,

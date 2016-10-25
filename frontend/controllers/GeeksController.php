@@ -2,13 +2,14 @@
 namespace frontend\controllers;
 
 use Yii;
+use frontend\models\FrontendUser;
+use frontend\models\FrontendGeeks;
 use yii\web\Controller;
 use common\models\Geeks;
 use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use common\models\GeekForm;
-use common\models\User;
 use common\models\Likes;
 use yii\web\Response;
 
@@ -122,7 +123,7 @@ class GeeksController extends Controller
 
         // Find your subscriptions
         $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
-        $all_id = User::getUsersId(Yii::$app->user->id, $param);
+        $all_id = FrontendUser::getUsersId(Yii::$app->user->id, $param);
 
         // Find geeks of your subscriptions for live search
         $geeks = Geeks::find()->select(['id as value', 'text as label'])->where(['user_id' => $all_id])->asArray()->all();
@@ -156,7 +157,7 @@ class GeeksController extends Controller
     public function actionFeed()
     {
         // Find geeks of users on which we subscribed
-        $geeks = Geeks::getUserFeed(Yii::$app->user->id, SORT_DESC);
+        $geeks = FrontendGeeks::getUserFeed(Yii::$app->user->id, SORT_DESC);
 
         // Find geeks that we liked
         $likes = Likes::getUserLikes(Yii::$app->user->id);
