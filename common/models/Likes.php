@@ -4,6 +4,8 @@ namespace common\models;
 
 use Yii;
 use yii\db\Query;
+use yii\web\NotFoundHttpException;
+
 /**
  * This is the model class for table "{{%likes}}".
  *
@@ -87,5 +89,25 @@ class Likes extends \yii\db\ActiveRecord
         }
 
         return $likes;
+    }
+
+    public static function doLike($user_id, $geek_id) {
+        $like = new self();
+
+        if (Geeks::findOne($geek_id) === null) {
+            throw new NotFoundHttpException;
+        }
+
+        if (Likes::isRelationExist($user_id, $geek_id)) {
+            Likes::find()->where(['user_id' => $user_id, 'geek_id' => $geek_id])->one()->delete();
+            $option = 'delete';
+        } else {
+            $like->user_id = $user_id;
+            $like->geek_id = $geek_id;
+            $like->save();
+            $option = 'add';
+        }
+
+        return $option;
     }
 }
