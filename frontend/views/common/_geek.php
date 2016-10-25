@@ -32,6 +32,9 @@ use yii\helpers\Url;
                     <button type="button" data-url="<?= Url::to(['geeks/like'], true) ?>" data-id="<?= $geek->id ?>" class="btn btn-primary like">
                         <i class="fa fa-heart <?= in_array($geek->id, $likes) ? "like" : '';?>"></i>
                     </button>
+                    <button type="button" data-url="<?= Url::to(['geeks/answer'], true) ?>" data-id="<?= $geek->id ?>" class="btn btn-primary answer">
+                        <i class="fa fa-reply"></i>
+                    </button>
                 </div>
                 <a class="blog-post-share pull-right" href="#">
                     <i class="material-icons">&#xE80D;</i>
