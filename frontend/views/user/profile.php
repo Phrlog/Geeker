@@ -11,7 +11,9 @@ use yii\helpers\Url;
 use common\models\Subscription;
 use frontend\assets\LikesAsset;
 use frontend\assets\SubscribeAsset;
+use frontend\assets\AnswerAsset;
 
+AnswerAsset::register($this);
 LikesAsset::register($this);
 SubscribeAsset::register($this);
 ?>

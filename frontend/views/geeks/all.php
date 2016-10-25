@@ -4,8 +4,10 @@
 /* @var $user common\models\User */
 /* @var array  $likes */
 
+use frontend\assets\AnswerAsset;
 use frontend\assets\LikesAsset;
 LikesAsset::register($this);
+AnswerAsset::register($this);
 
 ?>
 <?php foreach ($geeks as $geek): ?>

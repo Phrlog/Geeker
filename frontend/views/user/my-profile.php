@@ -9,7 +9,9 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use frontend\assets\LikesAsset;
+use frontend\assets\AnswerAsset;
 
+AnswerAsset::register($this);
 LikesAsset::register($this);
 ?>
 <div class="col-sm-4">
