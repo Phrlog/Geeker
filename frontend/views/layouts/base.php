@@ -16,7 +16,7 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->username : 'Гос�
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <?= Html::csrfMetaTags() ?>
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="/favicon.ico">
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
@@ -29,12 +29,12 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->username : 'Гос�
 
     <div class="navbar-wrapper container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="<?= Url::to(['geeks/index']); ?>"><i class="material-icons">&#xE871;</i> Geeker</a>
+            <a href="#" class="navbar-brand" href="<?= Url::to(['geeks/index']); ?>"><i class="material-icons">&#xE871;</i> Geeker</a>
         </div>
         <div class="navbar-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">
                 <li class="active dropdown">
-                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown"><?= Html::encode($username) ?>
+                    <a data-target="#" class="dropdown-toggle" data-toggle="dropdown"><?= Html::encode($username) ?>
                         <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if ($username == 'Гость'): ?>
@@ -50,7 +50,7 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->username : 'Гос�
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Твиты <b class="caret"></b></a>
+                    <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Твиты <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= Url::to(['geeks/all']); ?>">Все твиты</a></li>
                         <?php if ($username != 'Гость'): ?>
@@ -60,7 +60,7 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->username : 'Гос�
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Пользователи <b class="caret"></b></a>
+                    <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Пользователи <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= Url::to(['user/all']); ?>">Все пользователи</a></li>
                         <?php if ($username != 'Гость'): ?>
