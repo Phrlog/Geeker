@@ -23,12 +23,12 @@ class StaticController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['about'],
+                        'actions' => ['about', 'error'],
                         'allow' => true,
                     ],
 
                     [
-                        'actions' => ['about'],
+                        'actions' => ['about', 'error'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
