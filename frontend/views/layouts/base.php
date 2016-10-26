@@ -34,7 +34,7 @@ $username = Yii::$app->user->id ? Yii::$app->user->identity->username : 'Гос�
         <div class="navbar-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">
                 <li class="active dropdown">
-                    <a data-target="#" class="dropdown-toggle" data-toggle="dropdown"><?= Html::encode($username) ?>
+                    <a href="#" data-target="#" class="dropdown-toggle" data-toggle="dropdown"><?= Html::encode($username) ?>
                         <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <?php if ($username == 'Гость'): ?>
