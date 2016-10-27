@@ -31,15 +31,14 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'all', 'profile', 'friends', 'my-profile', 'subscribe', 'unsubscribe'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'all', 'profile', 'friends', 'my-profile', 'subscribe', 'unsubscribe'],
+                        'actions' => ['index', 'all', 'profile', 'search', 'logout', 'friends', 'my-profile', 'subscribe', 'subscriptions', 'subscribers'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['index', 'all', 'profile'],
+                        'actions' => ['index', 'all', 'profile', 'search', 'login', 'signup'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -217,7 +216,6 @@ class UserController extends Controller
     {
         $user = User::findModelById(Yii::$app->user->id);
 
-        // Find subscriptions and subscribers
         // Find subscriptions and subscribers
         $sub_me = Subscription::countUserSubscriptions(Yii::$app->user->id);
         $sub_to = Subscription::countUserSubscribers(Yii::$app->user->id);
