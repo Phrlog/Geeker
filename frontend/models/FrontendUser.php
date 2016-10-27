@@ -80,7 +80,8 @@ class FrontendUser extends \common\models\User
      */
     public static function getSubscribersId($user_id) {
         $param = ['select' => 'subscribe_id', 'where' => 'user_id'];
-        return $user_id ? self::getUsersId($user_id, $param) : [];
+        $users_id = self::getUsersId($user_id, $param);
+        return  is_array($users_id) ? $users_id : [];
     }
 
 }
