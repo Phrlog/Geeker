@@ -33,7 +33,7 @@ class UserController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'all', 'profile', 'search', 'logout', 'friends', 'my-profile', 'subscribe', 'subscriptions', 'subscribers'],
+                        'actions' => ['index', 'all', 'profile', 'search', 'logout', 'friends', 'my-profile', 'subscribe', 'subscriptions', 'subscribers', 'settings'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
